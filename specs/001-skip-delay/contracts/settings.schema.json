@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skip Delay Settings Schema",
+  "description": "JSON Schema for skip delay feature settings stored in electron-store",
+  "type": "object",
+  "properties": {
+    "skipDelayEnabled": {
+      "type": "boolean",
+      "description": "Controls whether skip delay feature is active. When false, skip button is immediately available (current behavior). When true, skip button is disabled for skipDelayDuration milliseconds.",
+      "default": false
+    },
+    "skipDelayDuration": {
+      "type": "integer",
+      "description": "Number of milliseconds skip button remains disabled when skipDelayEnabled is true. Value is stored in milliseconds but displayed in seconds in UI (1-300 seconds = 1000-300000 milliseconds).",
+      "default": 30000,
+      "minimum": 1000,
+      "maximum": 300000,
+      "multipleOf": 1000
+    }
+  },
+  "required": [],
+  "additionalProperties": true,
+  "examples": [
+    {
+      "skipDelayEnabled": false,
+      "skipDelayDuration": 30000
+    },
+    {
+      "skipDelayEnabled": true,
+      "skipDelayDuration": 60000
+    },
+    {
+      "skipDelayEnabled": true,
+      "skipDelayDuration": 1000
+    }
+  ]
+}
