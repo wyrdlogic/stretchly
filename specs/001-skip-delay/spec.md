@@ -25,9 +25,9 @@ When skip delay is enabled, users are presented with a break window that enforce
 
 **Acceptance Scenarios**:
 
-1. **Given** skip delay is enabled and a break window is triggered, **When** the break first appears, **Then** the skip button is disabled/hidden and cannot be clicked
+1. **Given** skip delay is enabled and a break window is triggered, **When** the break first appears, **Then** the skip button is hidden and cannot be clicked
 2. **Given** skip delay is enabled and a break has been active for less than 30 seconds, **When** the user attempts to skip, **Then** the action is prevented and no skip occurs
-3. **Given** skip delay is enabled and a break has been active for exactly 30 seconds, **When** the timer reaches this threshold, **Then** the skip button becomes enabled/visible
+3. **Given** skip delay is enabled and a break has been active for exactly 30 seconds, **When** the timer reaches this threshold, **Then** the skip button becomes visible
 4. **Given** skip delay is enabled and a break has been active for more than 30 seconds, **When** the user clicks skip, **Then** the break ends normally as it does today
 5. **Given** skip delay is enabled and the skip button is disabled, **When** the user views the break window, **Then** a visual countdown is displayed showing the remaining time until skip becomes available (MANDATORY)
 6. **Given** skip delay is disabled, **When** a break window appears, **Then** the skip button is immediately available (current default behavior)
@@ -45,7 +45,7 @@ Users can enable/disable the skip delay feature and customize its duration in th
 **Acceptance Scenarios**:
 
 1. **Given** the Preferences window is open, **When** the user navigates to the break settings section, **Then** a skip delay enable/disable toggle and duration configuration option are visible
-2. **Given** skip delay is disabled, **When** the user attempts to modify the delay duration, **Then** the duration input is disabled/grayed out
+2. **Given** skip delay is disabled, **When** the user attempts to modify the delay duration, **Then** the duration input is grayed out
 3. **Given** skip delay is enabled and the duration input field is active, **When** the user enters a valid number (1-300 seconds), **Then** the value is accepted and saved
 4. **Given** skip delay is enabled and the duration input field is active, **When** the user attempts to enter 0 or leave it empty, **Then** the input is rejected with validation error (minimum 1 second required)
 5. **Given** a custom skip delay has been configured and enabled, **When** a break is triggered, **Then** the break enforces the custom delay instead of the default 30 seconds
@@ -56,9 +56,9 @@ Users can enable/disable the skip delay feature and customize its duration in th
 
 ### User Story 3 - Skip Delay Applies to Both Break Types (Priority: P3)
 
-The skip delay setting applies consistently to both microbreaks (short breaks) and long breaks, with the option to configure them independently if needed.
+The skip delay setting applies consistently to both microbreaks (short breaks) and long breaks.
 
-**Why this priority**: Ensures consistent behavior across break types. May be delivered after P1 and P2 if independent configuration isn't initially needed.
+**Why this priority**: Ensures consistent behavior across break types. May be delivered after P1 and P2.
 
 **Independent Test**: Can be tested by configuring skip delay, then triggering both a microbreak and a long break, verifying both respect the setting. Delivers value by ensuring predictable behavior.
 
@@ -90,9 +90,9 @@ The skip delay setting applies consistently to both microbreaks (short breaks) a
 
 - **FR-001**: System MUST provide an enable/disable toggle for skip delay feature in preferences (similar to short/long break enable toggles)
 - **FR-002**: System MUST default skip delay feature to disabled state when no user preference is set
-- **FR-003**: System MUST display skip button as disabled/inactive when break window appears and skip delay is enabled
+- **FR-003**: System MUST display skip button as hidden when break window appears and skip delay is enabled
 - **FR-004**: System MUST enforce a configurable delay period before enabling the skip button when feature is enabled
-- **FR-005**: System MUST default skip delay duration to 30 seconds when feature is enabled
+- **FR-005**: System MUST default skip delay duration to 30000 milliseconds (30 seconds) when feature is enabled
 - **FR-006**: System MUST persist both enable/disable state and duration preference across application restarts
 - **FR-007**: System MUST provide a preferences UI control for configuring skip delay duration
 - **FR-008**: System MUST disable/gray out duration input when skip delay feature is disabled

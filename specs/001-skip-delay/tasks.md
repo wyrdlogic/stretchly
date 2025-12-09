@@ -109,7 +109,7 @@
 **Purpose**: Handle edge cases, optional styling, testing infrastructure
 
 - [ ] T024 [P] Optional: Add CSS styling for skip-countdown element in app/css/break.css (subtle, non-intrusive per spec mitigation)
-- [ ] T025 [P] Create test/skipDelay.js with 7 test cases for canSkip() logic (disabled, enabled-not-passed, enabled-passed, strict-mode-override, postpone-window, etc.)
+- [ ] T025 [P] Create test/skipDelay.js with 7 test cases for canSkip() logic: (1) skip delay disabled, (2) skip delay enabled but not passed, (3) skip delay enabled and passed, (4) strict mode overrides skip delay, (5) postpone window respects skip delay, (6) resume from suspend recalculates time, (7) skip delay longer than break duration
 - [ ] T026 Update existing canSkip() calls in test/utils.js to include two new false parameters (skipDelayEnabled=false, skipDelayPassed=false)
 - [ ] T027 Run npm test to verify all tests pass including new skipDelay tests
 - [ ] T028 Run npm run lint to verify StandardJS compliance (no semicolons, 2-space indent, single quotes)
@@ -146,26 +146,32 @@ Phase 6 (Polish & Edge Cases) ← Final validation
 ### Parallel Execution Opportunities
 
 **Within Foundation Phase** (after T004 completes):
+
 - T005 (utils.js) and T006 (en.json) can run in parallel (different files)
 
 **Within US1 Phase** (after T006 completes):
+
 - T007 (break.html) and T008 (microbreak.html) can run in parallel (identical changes, different files)
 - After T009-T011 complete for break-renderer.js:
   - T012 (microbreak-renderer.js) can run independently (same changes, different file)
 
 **Within US2 Phase** (after T013 completes):
+
 - T014 (preferences.html) can run while T015-T017 are planned (HTML changes independent of JS)
 
 **Within US3 Phase** (US1+US2 complete):
+
 - All T020-T023 are manual tests, can be run in any order or batched
 
 **Within Polish Phase** (all user stories complete):
+
 - T024 (CSS), T025 (new tests), T026 (update tests) can run in parallel (different files)
 - T029-T032 (manual edge case tests) can run in parallel
 
 ### Example Parallel Execution (US1 Phase)
 
 **Session 1** (Foundation):
+
 ```bash
 # Developer A
 git checkout 001-skip-delay
@@ -179,6 +185,7 @@ git checkout 001-skip-delay
 ```
 
 **Session 2** (US1 Implementation):
+
 ```bash
 # Developer A
 # T007: Edit break.html (add countdown span)
@@ -196,6 +203,7 @@ git checkout 001-skip-delay
 ### Critical Path (No Parallelization)
 
 **Minimum Sequential Steps** (if one person):
+
 1. T001-T003 (setup verification)
 2. T004 (defaultSettings - blocks everything)
 3. T005, T006 (utils + i18n - parallel possible but small gain)
@@ -216,11 +224,13 @@ git checkout 001-skip-delay
 ### MVP-First Approach
 
 **Phase 3 (US1) = Minimum Viable Product**
+
 - Delivers core value: skip delay enforcement with countdown
 - Can be released independently (requires manual config in electron-store, but functional)
 - Validates user acceptance of delay concept before investing in UI
 
 **Incremental Delivery After MVP**:
+
 - **Phase 4 (US2)**: Adds convenience (UI configuration) but doesn't change core behavior
 - **Phase 5 (US3)**: Validation only - confirms existing implementation works for both break types
 - **Phase 6**: Quality & edge cases - hardens feature for production
@@ -228,11 +238,13 @@ git checkout 001-skip-delay
 ### Suggested MVP Scope
 
 **Include**:
+
 - Phase 1 (Setup)
 - Phase 2 (Foundation)
 - Phase 3 (US1: Default Behavior)
 
 **Optional for MVP**:
+
 - Phase 4 (US2: Preferences UI) - nice-to-have, not blocking
 - Phase 5 (US3: Validation) - confidence check, likely already works
 - Phase 6 (Polish) - important for production, not for MVP validation
@@ -250,6 +262,7 @@ git checkout 001-skip-delay
 **[P] Markers**: ✅ Added to 12 parallelizable tasks (T002, T003, T006, T007, T008, T024, T025, T029, T030, T031, T032)
 
 **[Story] Labels**: ✅ All user story tasks labeled:
+
 - US1: T007-T013 (7 tasks)
 - US2: T014-T019 (6 tasks)
 - US3: T020-T023 (4 tasks)
@@ -257,6 +270,7 @@ git checkout 001-skip-delay
 **File Paths**: ✅ All implementation tasks specify exact file paths (app/utils/defaultSettings.js, app/break-renderer.js, etc.)
 
 **Phases**:
+
 - ✅ Phase 1: Setup (3 tasks)
 - ✅ Phase 2: Foundational (3 tasks)
 - ✅ Phase 3: US1 - Default Behavior (7 tasks)
