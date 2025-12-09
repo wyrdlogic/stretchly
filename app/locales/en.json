@@ -28,6 +28,7 @@
   "break": {
     "postpone": "Postpone this break",
     "skip": "Skip this break",
+    "skipDelay": "Skip available in {{seconds}}s",
     "title": "Time to take a break!",
     "finish": "Finish this break"
   },
@@ -69,6 +70,10 @@
       "strictModeInfo": "Strict mode prevents you from skipping either Mini breaks or Long breaks and is designed to help discipline.",
       "enableStrictMini": "Enable Strict mode for Mini breaks",
       "enableStrictLong": "Enable Strict mode for Long breaks",
+      "skipDelay": "Skip delay:",
+      "skipDelayInfo": "Skip delay enforces a minimum viewing time before the skip button becomes available, helping you resist the urge to skip breaks immediately.",
+      "enableSkipDelay": "Enable skip delay",
+      "skipDelayDuration": "Skip delay duration:",
       "cantDisableBoth": "It is not possible to disable both types of breaks"
     },
     "theme": {

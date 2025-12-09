@@ -81,5 +81,7 @@ export default {
   hideStrictModePreferences: false,
   miniBreakManualFinish: false,
   longBreakManualFinish: false,
-  flatpakAutostart: false
+  flatpakAutostart: false,
+  skipDelayEnabled: false,
+  skipDelayDuration: 30000
 }

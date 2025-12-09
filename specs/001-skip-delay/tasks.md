@@ -12,9 +12,9 @@
 
 **Purpose**: Prepare development environment and verify tooling
 
-- [ ] T001 Verify Node.js 22.20.0+ installed and feature branch 001-skip-delay is active
-- [ ] T002 [P] Run npm run lint to confirm StandardJS configuration working
-- [ ] T003 [P] Run npm test to verify existing tests pass before modifications
+- [X] T001 Verify Node.js 22.20.0+ installed and feature branch 001-skip-delay is active
+- [X] T002 [P] Run npm run lint to confirm StandardJS configuration working
+- [X] T003 [P] Run npm test to verify existing tests pass before modifications
 
 **Time Estimate**: ~5 minutes
 
@@ -26,9 +26,9 @@
 
 **⚠️ CRITICAL**: User stories cannot be implemented until these tasks complete
 
-- [ ] T004 Add skipDelayEnabled (default: false) and skipDelayDuration (default: 30000) to app/utils/defaultSettings.js
-- [ ] T005 Update canSkip() function signature in app/utils/utils.js to accept skipDelayEnabled and skipDelayPassed parameters
-- [ ] T006 [P] Add skip delay i18n strings to app/locales/en.json (skipDelay, skipDelayInfo, enableSkipDelay, skipDelayDuration)
+- [X] T004 Add skipDelayEnabled (default: false) and skipDelayDuration (default: 30000) to app/utils/defaultSettings.js
+- [X] T005 Update canSkip() function signature in app/utils/utils.js to accept skipDelayEnabled and skipDelayPassed parameters
+- [X] T006 [P] Add skip delay i18n strings to app/locales/en.json (skipDelay, skipDelayInfo, enableSkipDelay, skipDelayDuration)
 
 **Checkpoint**: Foundation ready - settings exist, core logic updated, strings available
 
@@ -46,13 +46,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T007 [P] [US1] Add `<span id='skip-countdown' class='hidden' aria-hidden="true"></span>` after progress-time in app/break.html
-- [ ] T008 [P] [US1] Add `<span id='skip-countdown' class='hidden' aria-hidden="true"></span>` after progress-time in app/microbreak.html
-- [ ] T009 [US1] In app/break-renderer.js: Read skipDelayEnabled and skipDelayDuration settings at initialization (after locale variable)
-- [ ] T010 [US1] In app/break-renderer.js: Get skipCountdownElement reference with other element refs
-- [ ] T011 [US1] In app/break-renderer.js: Calculate skipDelayPassed in setInterval, update canSkip() call with new params, add countdown display logic
-- [ ] T012 [US1] In app/microbreak-renderer.js: Duplicate changes from T009-T011 (read settings, get element, update interval logic)
-- [ ] T013 [US1] Manual test: Enable skipDelayEnabled in electron-store, trigger break, verify countdown displays and skip button appears after 30 seconds
+- [X] T007 [P] [US1] Add `<span id='skip-countdown' class='hidden' aria-hidden="true"></span>` after progress-time in app/break.html
+- [X] T008 [P] [US1] Add `<span id='skip-countdown' class='hidden' aria-hidden="true"></span>` after progress-time in app/microbreak.html
+- [X] T009 [US1] In app/break-renderer.js: Read skipDelayEnabled and skipDelayDuration settings at initialization (after locale variable)
+- [X] T010 [US1] In app/break-renderer.js: Get skipCountdownElement reference with other element refs
+- [X] T011 [US1] In app/break-renderer.js: Calculate skipDelayPassed in setInterval, update canSkip() call with new params, add countdown display logic
+- [X] T012 [US1] In app/microbreak-renderer.js: Duplicate changes from T009-T011 (read settings, get element, update interval logic)
+- [X] T013 [US1] Manual test: Enable skipDelayEnabled in electron-store, trigger break, verify countdown displays and skip button appears after 30 seconds
 
 **Checkpoint**: User Story 1 complete - skip delay enforced on both break types when feature enabled, countdown visible
 
@@ -70,12 +70,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T014 [P] [US2] Add skip delay section to app/preferences.html after strict mode section (hr, heading span, info p, checkbox, range input with data-divisor="1000")
-- [ ] T015 [US2] In app/preferences-renderer.js: Add logic to get skipDelayCheckbox and skipDelayInput elements
-- [ ] T016 [US2] In app/preferences-renderer.js: Initialize input.disabled based on checkbox.checked state
-- [ ] T017 [US2] In app/preferences-renderer.js: Add checkbox.onchange handler to toggle input.disabled and save skipDelayEnabled setting
-- [ ] T018 [US2] Manual test: Open Preferences, toggle checkbox, verify input enables/disables, set duration to 10 seconds, trigger break, verify 10-second countdown
-- [ ] T019 [US2] Manual test: Attempt to set duration to 0 with feature enabled, verify HTML5 validation prevents invalid input (min="1" attribute)
+- [X] T014 [P] [US2] Add skip delay section to app/preferences.html after strict mode section (hr, heading span, info p, checkbox, range input with data-divisor="1000")
+- [X] T015 [US2] In app/preferences-renderer.js: Add logic to get skipDelayCheckbox and skipDelayInput elements
+- [X] T016 [US2] In app/preferences-renderer.js: Initialize input.disabled based on checkbox.checked state
+- [X] T017 [US2] In app/preferences-renderer.js: Add checkbox.onchange handler to toggle input.disabled and save skipDelayEnabled setting
+- [X] T018 [US2] Manual test: Open Preferences, toggle checkbox, verify input enables/disables, set duration to 10 seconds, trigger break, verify 10-second countdown
+- [X] T019 [US2] Manual test: Attempt to set duration to 0 with feature enabled, verify HTML5 validation prevents invalid input (min="1" attribute)
 
 **Checkpoint**: User Story 2 complete - full UI control for enable/disable and duration configuration
 
@@ -93,10 +93,10 @@
 
 ### Validation for User Story 3
 
-- [ ] T020 [US3] Manual test: Enable skip delay with 15-second duration, trigger microbreak, verify 15-second countdown and skip delay enforcement
-- [ ] T021 [US3] Manual test: With same 15-second setting active, trigger long break, verify identical 15-second countdown and enforcement
-- [ ] T022 [US3] Manual test: Change skip delay to 60 seconds in Preferences, trigger microbreak, verify new 60-second countdown
-- [ ] T023 [US3] Manual test: Without changing settings, trigger long break, verify same 60-second countdown (confirms both types read same setting)
+- [X] T020 [US3] Manual test: Enable skip delay with 15-second duration, trigger microbreak, verify 15-second countdown and skip delay enforcement
+- [X] T021 [US3] Manual test: With same 15-second setting active, trigger long break, verify identical 15-second countdown and enforcement
+- [X] T022 [US3] Manual test: Change skip delay to 60 seconds in Preferences, trigger microbreak, verify new 60-second countdown
+- [X] T023 [US3] Manual test: Without changing settings, trigger long break, verify same 60-second countdown (confirms both types read same setting)
 
 **Checkpoint**: User Story 3 complete - verified single setting controls both break types consistently
 

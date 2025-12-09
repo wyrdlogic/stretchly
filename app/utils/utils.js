@@ -53,8 +53,14 @@ function canPostpone (postpone, passedPercent, postponePercent) {
 }
 
 // does not consider `postponesLimit`
-function canSkip (strictMode, postpone, passedPercent, postponePercent) {
-  return !((postpone && passedPercent <= postponePercent) || strictMode)
+function canSkip (strictMode, postpone, passedPercent, postponePercent, skipDelayEnabled = false, skipDelayPassed = false) {
+  if (strictMode) {
+    return false
+  }
+  if (skipDelayEnabled && !skipDelayPassed) {
+    return false
+  }
+  return !(postpone && passedPercent <= postponePercent)
 }
 
 function formatKeyboardShortcut (keyboardShortcut) {

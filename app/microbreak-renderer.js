@@ -40,6 +40,7 @@ window.onload = async (event) => {
 
   const progress = document.querySelector('#progress')
   const progressTime = document.querySelector('#progress-time')
+  const skipCountdownElement = document.querySelector('#skip-countdown')
   const postponeElement = document.querySelector('#postpone')
   const closeElement = document.querySelector('#close')
   const manualFinishElement = document.querySelector('#finish')
@@ -55,6 +56,8 @@ window.onload = async (event) => {
   let manualAwaiting = false
 
   const locale = await window.settings.get('language')
+  const skipDelayEnabled = await window.settings.get('skipDelayEnabled')
+  const skipDelayDuration = await window.settings.get('skipDelayDuration')
 
   manualFinishElement.onclick = async () => {
     await window.breaks.finishBreak()
@@ -66,18 +69,27 @@ window.onload = async (event) => {
     }
     const now = Date.now()
     const passed = now - started
+    const skipDelayPassed = passed >= skipDelayDuration
     if (!manualAwaiting) {
       if (passed < duration) {
         const passedPercent = passed / duration * 100
-        if (window.utils.canPostpone(postpone, passedPercent, postponePercent)) {
+        const canPostponeNow = window.utils.canPostpone(postpone, passedPercent, postponePercent)
+        if (canPostponeNow) {
           postponeElement.classList.remove('hidden')
         } else {
           postponeElement.classList.add('hidden')
         }
-        if (window.utils.canSkip(strictMode, postpone, passedPercent, postponePercent)) {
+        if (window.utils.canSkip(strictMode, postpone, passedPercent, postponePercent, skipDelayEnabled, skipDelayPassed)) {
           closeElement.classList.remove('hidden')
+          skipCountdownElement.classList.add('hidden')
         } else {
           closeElement.classList.add('hidden')
+          if (skipDelayEnabled && !skipDelayPassed && !canPostponeNow) {
+            skipCountdownElement.innerHTML = await window.utils.formatTimeRemaining(skipDelayDuration - passed, locale)
+            skipCountdownElement.classList.remove('hidden')
+          } else {
+            skipCountdownElement.classList.add('hidden')
+          }
         }
         progress.value = (100 - passedPercent) * progress.max / 100
         progressTime.innerHTML = await window.utils.formatTimeRemaining(duration - passed, locale)

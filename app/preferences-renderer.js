@@ -177,15 +177,26 @@ window.onload = async (e) => {
     }
   })
 
+  const skipDelayCheckbox = document.querySelector('#enableSkipDelay')
+  const skipDelayInput = document.querySelector('#skipDelayDuration')
+
   document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     const isNegative = checkbox.classList.contains('negative')
     checkbox.checked = isNegative ? !settings[checkbox.value] : settings[checkbox.value]
     if (!eventsAttached) {
-      checkbox.onchange = (event) =>
+      checkbox.onchange = (event) => {
         window.settings.saveSettings(checkbox.value,
           isNegative ? !checkbox.checked : checkbox.checked)
+        if (checkbox === skipDelayCheckbox && skipDelayInput) {
+          skipDelayInput.disabled = !skipDelayCheckbox.checked
+        }
+      }
     }
   })
+
+  if (skipDelayCheckbox && skipDelayInput) {
+    skipDelayInput.disabled = !skipDelayCheckbox.checked
+  }
 
   document.querySelectorAll('input[type="radio"]').forEach(radio => {
     let value
