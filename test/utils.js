@@ -124,6 +124,26 @@ describe('Others', () => {
     it('is true when not in strict mode II', () => {
       canSkip(false, false, 20, 30).should.equal(true)
     })
+
+    // Friction parameter tests
+    it('is true when in strict mode with friction enabled', () => {
+      canSkip(true, true, 20, 30, false, false, true).should.equal(true)
+    })
+    it('is true when in strict mode with friction enabled after postpone percent', () => {
+      canSkip(true, true, 40, 30, false, false, true).should.equal(true)
+    })
+    it('is true when in strict mode with friction enabled and no postpone', () => {
+      canSkip(true, false, 40, 30, false, false, true).should.equal(true)
+    })
+    it('is false when skip delay enabled and not passed even with friction', () => {
+      canSkip(true, false, 40, 30, true, false, true).should.equal(false)
+    })
+    it('is true when skip delay enabled and passed with friction', () => {
+      canSkip(true, false, 40, 30, true, true, true).should.equal(true)
+    })
+    it('is false when in strict mode without friction enabled', () => {
+      canSkip(true, true, 20, 30, false, false, false).should.equal(false)
+    })
   })
 
   describe('canPostpone', () => {

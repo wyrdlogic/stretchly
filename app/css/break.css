@@ -12,6 +12,10 @@
   justify-items: center;
 }
 
+.hidden {
+  display: none;
+}
+
 .breaks > * {
   grid-column: 2 / span 1;
 }
@@ -107,4 +111,180 @@ body[dir=rtl] .breaks > :nth-child(2) > a img {
   bottom: 12px;
   position: absolute;
   right: 12px;
+}
+
+#friction-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.friction-stats {
+  display: flex;
+  gap: 30px;
+  font-size: 14px;
+  color: var(--text-color, #FFFFFF);
+}
+
+.friction-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.friction-word {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.friction-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 40px;
+  gap: 8px;
+  justify-content: center;
+}
+
+.friction-column {
+  width: 40px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.friction-column.target-char {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #FFFFFF;
+}
+
+.friction-column.input-char {
+  cursor: text;
+}
+
+.friction-column input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  color: #FFFFFF;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.friction-column input:focus {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.friction-column input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 18px;
+}
+
+.friction-column.empty {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.friction-column.correct {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: #4CAF50;
+}
+
+.friction-column.incorrect {
+  background: rgba(244, 67, 54, 0.3);
+  border-color: #F44336;
+}
+
+.friction-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.friction-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#friction-skip {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+}
+
+#friction-skip:disabled {
+  background: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+#friction-cancel {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  color: #FFFFFF;
+}
+
+#friction-cancel:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .friction-row {
+    grid-auto-columns: 35px;
+    gap: 6px;
+  }
+  
+  .friction-column {
+    width: 35px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  .friction-column input {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .friction-row {
+    grid-auto-columns: 30px;
+    gap: 4px;
+  }
+  
+  .friction-column {
+    width: 30px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .friction-column input {
+    font-size: 16px;
+  }
+  
+  .friction-stats {
+    font-size: 12px;
+    gap: 15px;
+  }
 }

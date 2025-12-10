@@ -53,12 +53,15 @@ function canPostpone (postpone, passedPercent, postponePercent) {
 }
 
 // does not consider `postponesLimit`
-function canSkip (strictMode, postpone, passedPercent, postponePercent, skipDelayEnabled = false, skipDelayPassed = false) {
-  if (strictMode) {
+function canSkip (strictMode, postpone, passedPercent, postponePercent, skipDelayEnabled = false, skipDelayPassed = false, frictionEnabled = false) {
+  if (strictMode && !frictionEnabled) {
     return false
   }
   if (skipDelayEnabled && !skipDelayPassed) {
     return false
+  }
+  if (frictionEnabled) {
+    return true
   }
   return !(postpone && passedPercent <= postponePercent)
 }

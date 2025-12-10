@@ -403,3 +403,43 @@ body[dir=rtl] .heart > .authenticate > a {
   padding-right: 0;
   padding-left: 20px;
 }
+
+.friction-settings-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.friction-settings-section label {
+  min-width: 150px;
+}
+
+.friction-settings-section input[type="number"] {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  background: var(--input-bg, #fff);
+  color: var(--text-color, #000);
+}
+
+.friction-settings-section button {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--main-color);
+  background: var(--main-color);
+  color: white;
+  cursor: pointer;
+}
+
+.friction-settings-section button:hover {
+  opacity: 0.8;
+}
+
+.friction-settings-section span {
+  font-weight: bold;
+  min-width: 40px;
+  text-align: right;
+}

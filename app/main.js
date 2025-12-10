@@ -1642,6 +1642,19 @@ ipcMain.on('set-window-size', (event, width, height) => {
   win.setSize(width, height)
 })
 
+ipcMain.on('set-window-focusable', (event, focusable) => {
+  const win = BrowserWindow.fromWebContents(event.sender)
+  if (win) {
+    log.info(`Stretchly: setting window focusable=${focusable}`)
+    win.setFocusable(focusable)
+    if (focusable) {
+      win.show()
+      win.focus()
+      win.moveTop()
+    }
+  }
+})
+
 ipcMain.handle('get-version', (event) => {
   return app.getVersion()
 })

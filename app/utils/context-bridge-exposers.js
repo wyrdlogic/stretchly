@@ -33,7 +33,8 @@ function exposeBreaks (type) {
     postponeBreak: () => ipcRenderer.send(`postpone-${type}-break`),
     signalLoaded: () => ipcRenderer.send(`${type}-break-loaded`),
     onEnterManualAwait: (callback) => ipcRenderer.on('enter-manual-await', (_e, which) => callback(which)),
-    sanitizeIdea: (value) => sanitizeIdea(value)
+    sanitizeIdea: (value) => sanitizeIdea(value),
+    setWindowFocusable: (focusable) => ipcRenderer.send('set-window-focusable', focusable)
   })
 }
 

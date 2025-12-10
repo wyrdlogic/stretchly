@@ -198,6 +198,99 @@ window.onload = async (e) => {
     skipDelayInput.disabled = !skipDelayCheckbox.checked
   }
 
+  // Friction settings
+  const microbreakFrictionCharLength = document.querySelector('#microbreakFrictionCharLength')
+  const microbreakFrictionMaxWords = document.querySelector('#microbreakFrictionMaxWords')
+  const microbreakFrictionTotalCount = document.querySelector('#microbreakFrictionTotalCount')
+  const resetMicrobreakFrictionButton = document.querySelector('#resetMicrobreakFrictionCounter')
+
+  const breakFrictionCharLength = document.querySelector('#breakFrictionCharLength')
+  const breakFrictionMaxWords = document.querySelector('#breakFrictionMaxWords')
+  const breakFrictionTotalCount = document.querySelector('#breakFrictionTotalCount')
+  const resetBreakFrictionButton = document.querySelector('#resetBreakFrictionCounter')
+
+  if (microbreakFrictionCharLength) {
+    microbreakFrictionCharLength.value = settings.microbreakSkipFrictionCharLength
+    if (!eventsAttached) {
+      microbreakFrictionCharLength.onchange = (event) => {
+        const value = parseInt(event.target.value)
+        if (value < 1 || value > 50) {
+          window.alert('Character length must be between 1 and 50')
+          event.target.value = settings.microbreakSkipFrictionCharLength
+          return
+        }
+        window.settings.saveSettings('microbreakSkipFrictionCharLength', value)
+      }
+    }
+  }
+
+  if (microbreakFrictionMaxWords) {
+    microbreakFrictionMaxWords.value = settings.microbreakSkipFrictionMaxWords
+    if (!eventsAttached) {
+      microbreakFrictionMaxWords.onchange = (event) => {
+        const value = parseInt(event.target.value)
+        if (value < 1 || value > 20) {
+          window.alert('Maximum words must be between 1 and 20')
+          event.target.value = settings.microbreakSkipFrictionMaxWords
+          return
+        }
+        window.settings.saveSettings('microbreakSkipFrictionMaxWords', value)
+      }
+    }
+  }
+
+  if (microbreakFrictionTotalCount) {
+    microbreakFrictionTotalCount.textContent = settings.microbreakSkipFrictionTotalCount
+  }
+
+  if (resetMicrobreakFrictionButton && !eventsAttached) {
+    resetMicrobreakFrictionButton.onclick = async () => {
+      await window.settings.saveSettings('microbreakSkipFrictionTotalCount', 0)
+      microbreakFrictionTotalCount.textContent = '0'
+    }
+  }
+
+  if (breakFrictionCharLength) {
+    breakFrictionCharLength.value = settings.breakSkipFrictionCharLength
+    if (!eventsAttached) {
+      breakFrictionCharLength.onchange = (event) => {
+        const value = parseInt(event.target.value)
+        if (value < 1 || value > 50) {
+          window.alert('Character length must be between 1 and 50')
+          event.target.value = settings.breakSkipFrictionCharLength
+          return
+        }
+        window.settings.saveSettings('breakSkipFrictionCharLength', value)
+      }
+    }
+  }
+
+  if (breakFrictionMaxWords) {
+    breakFrictionMaxWords.value = settings.breakSkipFrictionMaxWords
+    if (!eventsAttached) {
+      breakFrictionMaxWords.onchange = (event) => {
+        const value = parseInt(event.target.value)
+        if (value < 1 || value > 20) {
+          window.alert('Maximum words must be between 1 and 20')
+          event.target.value = settings.breakSkipFrictionMaxWords
+          return
+        }
+        window.settings.saveSettings('breakSkipFrictionMaxWords', value)
+      }
+    }
+  }
+
+  if (breakFrictionTotalCount) {
+    breakFrictionTotalCount.textContent = settings.breakSkipFrictionTotalCount
+  }
+
+  if (resetBreakFrictionButton && !eventsAttached) {
+    resetBreakFrictionButton.onclick = async () => {
+      await window.settings.saveSettings('breakSkipFrictionTotalCount', 0)
+      breakFrictionTotalCount.textContent = '0'
+    }
+  }
+
   document.querySelectorAll('input[type="radio"]').forEach(radio => {
     let value
     switch (radio.value) {

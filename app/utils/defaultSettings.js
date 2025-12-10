@@ -83,5 +83,17 @@ export default {
   longBreakManualFinish: false,
   flatpakAutostart: false,
   skipDelayEnabled: false,
-  skipDelayDuration: 30000
+  skipDelayDuration: 30000,
+  microbreakSkipFrictionEnabled: true,
+  microbreakSkipFrictionCharLength: 20,
+  microbreakSkipFrictionIncrementalEnabled: true,
+  microbreakSkipFrictionMaxWords: 5,
+  microbreakSkipFrictionTotalCount: 0,
+  microbreakSkipFrictionSequentialCount: 0,
+  breakSkipFrictionEnabled: true,
+  breakSkipFrictionCharLength: 20,
+  breakSkipFrictionIncrementalEnabled: true,
+  breakSkipFrictionMaxWords: 5,
+  breakSkipFrictionTotalCount: 0,
+  breakSkipFrictionSequentialCount: 0
 }

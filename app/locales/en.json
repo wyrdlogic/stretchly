@@ -30,7 +30,11 @@
     "skip": "Skip this break",
     "skipDelay": "Skip available in {{seconds}}s",
     "title": "Time to take a break!",
-    "finish": "Finish this break"
+    "finish": "Finish this break",
+    "frictionStats": "Total skips: {{count}}",
+    "frictionSequential": "Sequential: {{count}}",
+    "frictionSkipButton": "Skip Break",
+    "frictionCancelButton": "Continue Break"
   },
   "preferences": {
     "title": "Stretchly Preferences",
@@ -74,6 +78,15 @@
       "skipDelayInfo": "Skip delay enforces a minimum viewing time before the skip button becomes available, helping you resist the urge to skip breaks immediately.",
       "enableSkipDelay": "Enable skip delay",
       "skipDelayDuration": "Skip delay duration:",
+      "skipFriction": "Skip friction:",
+      "skipFrictionInfo": "Skip friction requires typing a randomly-generated string to skip breaks in strict mode, adding deliberate friction while still allowing skips when needed.",
+      "enableSkipFrictionMini": "Enable skip friction for Mini breaks",
+      "enableSkipFrictionLong": "Enable skip friction for Long breaks",
+      "frictionCharLength": "Character length per word:",
+      "enableIncrementalFriction": "Enable incremental friction",
+      "frictionMaxWords": "Maximum words:",
+      "frictionTotalCount": "Total skips:",
+      "frictionResetCount": "Reset counter",
       "cantDisableBoth": "It is not possible to disable both types of breaks"
     },
     "theme": {

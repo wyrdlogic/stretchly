@@ -296,6 +296,65 @@
       <input type="range" min="1" max="300" step="1" name="skipDelayDuration" id="skipDelayDuration" data-divisor="1000">
       <output data-unit="seconds"></output>
     </div>
+    <div>
+      <hr />
+    </div>
+    <div>
+      <span data-i18next="preferences.schedule.skipFriction">
+      </span>
+    </div>
+    <div>
+      <p data-i18next="preferences.schedule.skipFrictionInfo">
+      </p>
+    </div>
+    <div>
+      <h3 data-i18next="preferences.schedule.miniBreaks"></h3>
+    </div>
+    <div class="friction-settings-section">
+      <input type="checkbox" value="microbreakSkipFrictionEnabled" id="enableSkipFrictionMini">
+      <label data-i18next="preferences.schedule.enableSkipFrictionMini" for="enableSkipFrictionMini"></label>
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionCharLength" for="microbreakFrictionCharLength"></label>
+      <input type="number" min="1" max="50" name="microbreakFrictionCharLength" id="microbreakFrictionCharLength">
+    </div>
+    <div class="friction-settings-section">
+      <input type="checkbox" value="microbreakSkipFrictionIncrementalEnabled" id="enableIncrementalFrictionMini">
+      <label data-i18next="preferences.schedule.enableIncrementalFriction" for="enableIncrementalFrictionMini"></label>
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionMaxWords" for="microbreakFrictionMaxWords"></label>
+      <input type="number" min="1" max="20" name="microbreakFrictionMaxWords" id="microbreakFrictionMaxWords">
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionTotalCount" for="microbreakFrictionTotalCount"></label>
+      <span id="microbreakFrictionTotalCount">0</span>
+      <button id="resetMicrobreakFrictionCounter" data-i18next="preferences.schedule.frictionResetCount"></button>
+    </div>
+    <div>
+      <h3 data-i18next="preferences.schedule.longBreaks"></h3>
+    </div>
+    <div class="friction-settings-section">
+      <input type="checkbox" value="breakSkipFrictionEnabled" id="enableSkipFrictionLong">
+      <label data-i18next="preferences.schedule.enableSkipFrictionLong" for="enableSkipFrictionLong"></label>
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionCharLength" for="breakFrictionCharLength"></label>
+      <input type="number" min="1" max="50" name="breakFrictionCharLength" id="breakFrictionCharLength">
+    </div>
+    <div class="friction-settings-section">
+      <input type="checkbox" value="breakSkipFrictionIncrementalEnabled" id="enableIncrementalFrictionLong">
+      <label data-i18next="preferences.schedule.enableIncrementalFriction" for="enableIncrementalFrictionLong"></label>
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionMaxWords" for="breakFrictionMaxWords"></label>
+      <input type="number" min="1" max="20" name="breakFrictionMaxWords" id="breakFrictionMaxWords">
+    </div>
+    <div class="friction-settings-section">
+      <label data-i18next="preferences.schedule.frictionTotalCount" for="breakFrictionTotalCount"></label>
+      <span id="breakFrictionTotalCount">0</span>
+      <button id="resetBreakFrictionCounter" data-i18next="preferences.schedule.frictionResetCount"></button>
+    </div>
   </div>
   <div class="theme hidden">
     <div>
