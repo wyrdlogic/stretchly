@@ -326,7 +326,7 @@ function generateFrictionString(charLength, sequentialCount, maxWords, increment
 - Easier keyboard navigation (Tab moves down through words naturally)
 - Progress tracking more intuitive (complete word 1, move to word 2, etc.)
 
-**UX Note**: At maxWords=5 with charLength=20, total chars=100, displayed as 5 word blocks × 2 rows each = 10 rows (within performance target SC-010).
+**UX Note**: At maxWords=5 with charLength=20, total chars=100, displayed as 5 word blocks × 2 rows each = 10 rows (within performance target SC-010). At maxWords=20 with charLength=50, total chars=1000, displayed as 20 word blocks × 2 rows each = 40 rows (stress test boundary).
 
 ---
 

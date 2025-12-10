@@ -23,9 +23,9 @@ This document defines all data entities for the skip friction feature, including
 | Field | Type | Default | Constraints | Description |
 |-------|------|---------|-------------|-------------|
 | `microbreakSkipFrictionEnabled` | Boolean | `true` | - | Enable/disable friction for mini breaks |
-| `microbreakSkipFrictionCharLength` | Integer | `20` | min=1, max=100 | Character length per word |
+| `microbreakSkipFrictionCharLength` | Integer | `20` | min=1, max=50 | Character length per word |
 | `microbreakSkipFrictionIncrementalEnabled` | Boolean | `true` | - | Enable incremental difficulty |
-| `microbreakSkipFrictionMaxWords` | Integer | `5` | min=1, max=50 | Maximum words when incremental enabled |
+| `microbreakSkipFrictionMaxWords` | Integer | `5` | min=1, max=20 | Maximum words when incremental enabled |
 
 **Relationships**:
 
@@ -62,9 +62,9 @@ This document defines all data entities for the skip friction feature, including
 | Field | Type | Default | Constraints | Description |
 |-------|------|---------|-------------|-------------|
 | `breakSkipFrictionEnabled` | Boolean | `true` | - | Enable/disable friction for long breaks |
-| `breakSkipFrictionCharLength` | Integer | `20` | min=1, max=100 | Character length per word |
+| `breakSkipFrictionCharLength` | Integer | `20` | min=1, max=50 | Character length per word |
 | `breakSkipFrictionIncrementalEnabled` | Boolean | `true` | - | Enable incremental difficulty |
-| `breakSkipFrictionMaxWords` | Integer | `5` | min=1, max=50 | Maximum words when incremental enabled |
+| `breakSkipFrictionMaxWords` | Integer | `5` | min=1, max=20 | Maximum words when incremental enabled |
 
 **Relationships**:
 
@@ -100,8 +100,8 @@ This document defines all data entities for the skip friction feature, including
 
 | Field | Type | Default | Constraints | Description |
 |-------|------|---------|-------------|-------------|
-| `microbreakSkipFrictionTotalCount` | Integer | `0` | min=0 | Total skips using friction |
-| `microbreakSkipFrictionSequentialCount` | Integer | `0` | min=0 | Sequential skips without completion |
+| `microbreakSkipFrictionTotalCount` | Integer | `0` | min=0, max=9007199254740991 (Number.MAX_SAFE_INTEGER) | Total skips using friction |
+| `microbreakSkipFrictionSequentialCount` | Integer | `0` | min=0, max=9007199254740991 (Number.MAX_SAFE_INTEGER) | Sequential skips without completion |
 
 **State Transitions**:
 
@@ -154,8 +154,8 @@ Event: Application restarts
 
 | Field | Type | Default | Constraints | Description |
 |-------|------|---------|-------------|-------------|
-| `breakSkipFrictionTotalCount` | Integer | `0` | min=0 | Total skips using friction |
-| `breakSkipFrictionSequentialCount` | Integer | `0` | min=0 | Sequential skips without completion |
+| `breakSkipFrictionTotalCount` | Integer | `0` | min=0, max=9007199254740991 (Number.MAX_SAFE_INTEGER) | Total skips using friction |
+| `breakSkipFrictionSequentialCount` | Integer | `0` | min=0, max=9007199254740991 (Number.MAX_SAFE_INTEGER) | Sequential skips without completion |
 
 **State Transitions**: Same as mini break counters (see above).
 

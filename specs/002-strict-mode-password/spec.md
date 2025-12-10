@@ -109,13 +109,13 @@ When the friction interface is displayed during a skip attempt, users can see bo
 ### Edge Cases
 
 - What happens when randomly-generated string contains visually similar characters (e.g., 0 vs O, 1 vs l vs I)? (All valid characters from the character set can appear; users must distinguish them carefully as part of the friction)
-- What happens when user sets character length to maximum supported value? (System should handle up to a reasonable maximum like 100 characters without performance degradation)
+- What happens when user sets character length to maximum supported value? (System should handle up to a reasonable maximum like 50 characters without performance degradation)
 - What happens when user sets character length to 1? (System generates and displays a single-character string; friction is minimal but feature still works)
 - What happens when user types characters using copy-paste instead of typing? (Paste functionality should work - friction comes from difficulty of the complex string, not from preventing paste)
 - What happens to skip counters when they reach very large numbers? (Counters should support values up to reasonable maximum without overflow; exact limit determined by storage mechanism)
 - What happens when user changes character length setting while a break with friction interface is already active? (Active break continues with its already-generated string; new setting applies to next break)
 - What happens when theme changes while friction interface is displayed? (Color scheme for correct/incorrect feedback updates to match new theme immediately)
-- What happens when incremental friction is enabled and user sets maximum words to a very high number? (System should handle reasonable maximums like 50 words without performance issues)
+- What happens when incremental friction is enabled and user sets maximum words to a very high number? (System should handle reasonable maximums like 20 words without performance issues)
 - What happens when user enables incremental friction after already having sequential skips tracked? (Incremental friction applies immediately using current sequential skip count)
 - What happens when user disables incremental friction while at a high sequential skip count? (Sequential counter continues tracking but word count reverts to fixed length; counter still resets when break not skipped)
 - What happens when user switches between mini and long breaks? (Each break type maintains independent total and sequential counters)
@@ -129,15 +129,15 @@ When the friction interface is displayed during a skip attempt, users can see bo
 **Configuration**:
 
 - **FR-001**: System MUST provide option in preferences to enable skip friction for strict mode (enabled by default when strict mode is enabled)
-- **FR-002**: System MUST allow users to configure character length for generated string with minimum value of 1
+- **FR-002**: System MUST allow users to configure character length for generated string with minimum value of 1 and maximum value of 50
 - **FR-003**: System MUST set default character length to 20 characters
-- **FR-004**: System MUST validate that character length is a positive integer before saving
+- **FR-004**: System MUST validate that character length is a positive integer between 1 and 50 before saving
 - **FR-005**: System MUST persist skip friction settings across application restarts
 - **FR-006**: System MUST maintain separate skip friction settings for mini breaks and long breaks (consistent with existing microbreakStrictMode and breakStrictMode separation)
 - **FR-007**: System MUST provide option in preferences to enable incremental friction (enabled by default)
 - **FR-008**: System MUST allow users to configure maximum number of words for incremental friction
 - **FR-009**: System MUST set default maximum words to 5
-- **FR-010**: System MUST validate that maximum words is a positive integer before saving
+- **FR-010**: System MUST validate that maximum words is a positive integer between 1 and 20 before saving
 
 **String Generation**:
 
@@ -208,7 +208,7 @@ When the friction interface is displayed during a skip attempt, users can see bo
 - **SC-007**: Skip counters persist across application restarts without data loss
 - **SC-008**: Users can change friction settings or reset counter without requiring application restart
 - **SC-009**: Feature maintains existing strict mode skip prevention when skip friction is disabled (zero regression)
-- **SC-010**: Interface remains responsive and usable with character lengths up to 100 characters
+- **SC-010**: Interface remains responsive and usable with character lengths up to 50 characters
 - **SC-011**: Incremental friction increases word count correctly following formula (1 + sequential count) up to maximum
 - **SC-012**: Sequential skip counter resets to 0 within 1 second of break completing without skip
 - **SC-013**: Mini break and long break counters remain independent with 100% accuracy

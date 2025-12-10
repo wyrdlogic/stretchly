@@ -45,7 +45,7 @@ All tasks follow this format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Testing
 
-- [ ] T008 Create `test/frictionGenerator.js` with Vitest tests for correct length, character class distribution, uniqueness across calls, incremental word count, and edge cases (length=1, length=100, maxWords boundary)
+- [ ] T008 Create `test/frictionGenerator.js` with Vitest tests for correct length, character class distribution, uniqueness across calls, incremental word count, and edge cases (length=1, length=50, maxWords boundary)
 - [ ] T009 Run `npm test test/frictionGenerator.js` and verify all tests pass with 100% coverage for frictionGenerator.js
 
 ---
@@ -60,11 +60,11 @@ All tasks follow this format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Preferences UI Implementation
 
-- [ ] T010 [US1] Add friction settings section HTML to `app/preferences.html` under strict mode settings for mini breaks (checkbox for enabled, number input for charLength with min=1 max=100, checkbox for incrementalEnabled, number input for maxWords with min=1 max=50)
+- [ ] T010 [US1] Add friction settings section HTML to `app/preferences.html` under strict mode settings for mini breaks (checkbox for enabled, number input for charLength with min=1 max=50, checkbox for incrementalEnabled, number input for maxWords with min=1 max=20)
 - [ ] T011 [P] [US1] Add friction settings section HTML to `app/preferences.html` under strict mode settings for long breaks (same structure as mini breaks)
 - [ ] T012 [US1] Add CSS styles to `app/css/preferences.css` for .friction-settings-section class with consistent spacing and layout matching existing strict mode UI
 - [ ] T013 [US1] Implement loadFrictionSettings() function in `app/preferences-renderer.js` to populate UI from electron-store using window.settings.get() for all 12 friction settings
-- [ ] T014 [US1] Implement saveFrictionSettings() function in `app/preferences-renderer.js` to persist user changes using window.settings.set() with validation (charLength 1-100, maxWords 1-50)
+- [ ] T014 [US1] Implement saveFrictionSettings() function in `app/preferences-renderer.js` to persist user changes using window.settings.set() with validation (charLength 1-50, maxWords 1-20, enforce limits)
 - [ ] T015 [US1] Add event listeners in `app/preferences-renderer.js` for friction setting controls calling saveFrictionSettings() on change events
 - [ ] T016 [US1] Add input validation in `app/preferences-renderer.js` preventing invalid values (negative numbers, zero, exceeding max) with user-visible error messages
 

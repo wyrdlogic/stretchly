@@ -31,7 +31,7 @@ This contract defines the exact schema for all 12 settings fields added to elect
     type: Integer,
     default: 20,
     description: 'Number of characters per word in friction string',
-    validRange: { min: 1, max: 100 },
+    validRange: { min: 1, max: 50 },
     uiControl: 'number input',
     preferencesSection: 'strictMode'
   },
@@ -51,7 +51,7 @@ This contract defines the exact schema for all 12 settings fields added to elect
     type: Integer,
     default: 5,
     description: 'Maximum number of words when incremental friction enabled',
-    validRange: { min: 1, max: 50 },
+    validRange: { min: 1, max: 20 },
     uiControl: 'number input',
     preferencesSection: 'strictMode'
   },
@@ -97,7 +97,7 @@ This contract defines the exact schema for all 12 settings fields added to elect
     type: Integer,
     default: 20,
     description: 'Number of characters per word in friction string',
-    validRange: { min: 1, max: 100 },
+    validRange: { min: 1, max: 50 },
     uiControl: 'number input',
     preferencesSection: 'strictMode'
   },
@@ -117,7 +117,7 @@ This contract defines the exact schema for all 12 settings fields added to elect
     type: Integer,
     default: 5,
     description: 'Maximum number of words when incremental friction enabled',
-    validRange: { min: 1, max: 50 },
+    validRange: { min: 1, max: 20 },
     uiControl: 'number input',
     preferencesSection: 'strictMode'
   },
@@ -189,8 +189,8 @@ function validateCharLength(value) {
   if (!Number.isInteger(value)) {
     throw new Error('Character length must be an integer')
   }
-  if (value < 1 || value > 100) {
-    throw new Error('Character length must be between 1 and 100')
+  if (value < 1 || value > 50) {
+    throw new Error('Character length must be between 1 and 50')
   }
   return value
 }
@@ -203,8 +203,8 @@ function validateMaxWords(value) {
   if (!Number.isInteger(value)) {
     throw new Error('Maximum words must be an integer')
   }
-  if (value < 1 || value > 50) {
-    throw new Error('Maximum words must be between 1 and 50')
+  if (value < 1 || value > 20) {
+    throw new Error('Maximum words must be between 1 and 20')
   }
   return value
 }
@@ -379,7 +379,7 @@ function calculateWordCount(isBreak, sequentialCount) {
 
 <div class="setting-row">
   <label for="microbreak-friction-char-length">Character length per word</label>
-  <input type="number" id="microbreak-friction-char-length" min="1" max="100" value="20">
+  <input type="number" id="microbreak-friction-char-length" min="1" max="50" value="20">
 </div>
 
 <div class="setting-row">
@@ -391,7 +391,7 @@ function calculateWordCount(isBreak, sequentialCount) {
 
 <div class="setting-row">
   <label for="microbreak-friction-max-words">Maximum words</label>
-  <input type="number" id="microbreak-friction-max-words" min="1" max="50" value="5">
+  <input type="number" id="microbreak-friction-max-words" min="1" max="20" value="5">
 </div>
 
 <div class="setting-row">
@@ -457,7 +457,7 @@ describe('Friction Settings Persistence', () => {
   it('should validate character length within range', async () => {
     await expect(() => 
       window.settings.set('microbreakSkipFrictionCharLength', 0)
-    ).rejects.toThrow('Character length must be between 1 and 100')
+    ).rejects.toThrow('Character length must be between 1 and 50')
   })
   
   it('should persist counters across restarts', async () => {
@@ -475,6 +475,6 @@ describe('Friction Settings Persistence', () => {
 
 - **12 new settings fields** added to electron-store
 - **6 fields per break type** (enabled, charLength, incrementalEnabled, maxWords, totalCount, sequentialCount)
-- **Validation enforced** on charLength (1-100), maxWords (1-50), counters (≥0)
+- **Validation enforced** on charLength (1-50), maxWords (1-20), counters (0 to Number.MAX_SAFE_INTEGER)
 - **Preferences UI** provides user-facing controls for 5 fields per break type (sequential count is internal)
 - **Counters persist** across app restarts (FR-044, FR-045, FR-051)

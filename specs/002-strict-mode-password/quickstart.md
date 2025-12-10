@@ -137,8 +137,8 @@ function shuffleArray (array) {
 }
 
 export function generateRandomString (length) {
-  if (length < 1 || length > 100) {
-    throw new Error('String length must be between 1 and 100')
+  if (length < 1 || length > 50) {
+    throw new Error('String length must be between 1 and 50')
   }
   
   const charsPerClass = Math.floor(length / 4)
@@ -858,7 +858,7 @@ async function finishMicrobreak () {
 
 <div class="setting-row">
   <label for="microbreak-friction-char-length" data-i18n="preferences.skipFriction.charLength">Character length per word</label>
-  <input type="number" id="microbreak-friction-char-length" min="1" max="100" value="20">
+  <input type="number" id="microbreak-friction-char-length" min="1" max="50" value="20">
 </div>
 
 <div class="setting-row">
@@ -870,7 +870,7 @@ async function finishMicrobreak () {
 
 <div class="setting-row">
   <label for="microbreak-friction-max-words" data-i18n="preferences.skipFriction.maxWords">Maximum words</label>
-  <input type="number" id="microbreak-friction-max-words" min="1" max="50" value="5">
+  <input type="number" id="microbreak-friction-max-words" min="1" max="20" value="5">
 </div>
 
 <div class="setting-row">
@@ -892,7 +892,7 @@ async function finishMicrobreak () {
 
 <div class="setting-row">
   <label for="break-friction-char-length" data-i18n="preferences.skipFriction.charLength">Character length per word</label>
-  <input type="number" id="break-friction-char-length" min="1" max="100" value="20">
+  <input type="number" id="break-friction-char-length" min="1" max="50" value="20">
 </div>
 
 <div class="setting-row">
@@ -1087,7 +1087,7 @@ npm test
 - Incremental friction: Increases the number of words required based on sequential skips (separate tracking for mini and long breaks)
 - Skip counters: Track total and sequential skips with reset functionality in preferences
 - Character-by-character visual feedback (green for correct, red for incorrect)
-- Configurable character length (1-100) and maximum words (1-50) per break type
+- Configurable character length (1-50) and maximum words (1-20) per break type
 ```
 
 ---
