@@ -246,6 +246,7 @@ window.onload = async (e) => {
   if (resetMicrobreakFrictionButton && !eventsAttached) {
     resetMicrobreakFrictionButton.onclick = async () => {
       await window.settings.saveSettings('microbreakSkipFrictionTotalCount', 0)
+      await window.settings.saveSettings('microbreakSkipFrictionSequentialCount', 0)
       microbreakFrictionTotalCount.textContent = '0'
     }
   }
@@ -287,6 +288,7 @@ window.onload = async (e) => {
   if (resetBreakFrictionButton && !eventsAttached) {
     resetBreakFrictionButton.onclick = async () => {
       await window.settings.saveSettings('breakSkipFrictionTotalCount', 0)
+      await window.settings.saveSettings('breakSkipFrictionSequentialCount', 0)
       breakFrictionTotalCount.textContent = '0'
     }
   }

@@ -135,32 +135,36 @@ body[dir=rtl] .breaks > :nth-child(2) > a img {
   gap: 20px;
   max-height: 400px;
   overflow-y: auto;
+  width: 100%;
+  max-width: 900px;
 }
 
 .friction-word {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100%;
 }
 
 .friction-row {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 40px;
-  gap: 8px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
   justify-content: center;
+  width: 100%;
 }
 
 .friction-column {
-  width: 40px;
-  height: 50px;
+  width: 36px;
+  height: 48px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
   font-family: 'Courier New', monospace;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   background: rgba(255, 255, 255, 0.1);
   position: relative;
@@ -182,7 +186,7 @@ body[dir=rtl] .breaks > :nth-child(2) > a img {
   border: none;
   background: transparent;
   font-family: 'Courier New', monospace;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #FFFFFF;
   outline: none;
@@ -251,38 +255,44 @@ body[dir=rtl] .breaks > :nth-child(2) > a img {
 }
 
 @media (max-width: 768px) {
+  .friction-grid {
+    max-width: 700px;
+  }
+
   .friction-row {
-    grid-auto-columns: 35px;
-    gap: 6px;
+    gap: 5px;
   }
-  
+
   .friction-column {
-    width: 35px;
-    height: 45px;
-    font-size: 18px;
+    width: 32px;
+    height: 44px;
+    font-size: 16px;
   }
-  
+
   .friction-column input {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
+  .friction-grid {
+    max-width: 500px;
+  }
+
   .friction-row {
-    grid-auto-columns: 30px;
     gap: 4px;
   }
-  
+
   .friction-column {
-    width: 30px;
+    width: 28px;
     height: 40px;
-    font-size: 16px;
+    font-size: 14px;
   }
-  
+
   .friction-column input {
-    font-size: 16px;
+    font-size: 14px;
   }
-  
+
   .friction-stats {
     font-size: 12px;
     gap: 15px;
