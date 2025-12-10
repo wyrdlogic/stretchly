@@ -13,6 +13,11 @@
 - Q: When incremental friction is enabled, the spec mentions generating "words" (FR-017, FR-018) but the character-by-character interface describes individual characters in columns. How should words relate to the character interface? → A: Each word is a separate sequence of characters with visual spacing between words, displayed in the same column-based interface
 - Q: What specific special characters should be included in the random string generation (FR-015)? → A: Common keyboard special characters: `!@#$%^&*()_+-=[]{}|;:,.<>?`
 - Q: When incremental friction is enabled, what is the character length of each "word" in the generated sequence? → A: Use the configured character length setting (default 20) per word
+- Q: When displaying multiple words with incremental friction, should words be arranged horizontally or vertically? → A: Each word occupies 2 rows stacked vertically (row 1: target characters, row 2: input fields), with words separated by vertical spacing. For 3 words, the layout is: word1-target (row 1), word1-input (row 2), spacing, word2-target (row 3), word2-input (row 4), spacing, word3-target (row 5), word3-input (row 6)
+
+---
+
+**Clarification Summary**: All ambiguities resolved. Incremental friction displays words as vertically-stacked 2-row pairs (target + input), providing clear visual separation and better mobile/responsive support.
 
 ## User Scenarios & Testing *(mandatory)*
 
