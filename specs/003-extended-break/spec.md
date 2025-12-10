@@ -76,20 +76,21 @@ A user wants to enable, disable, or modify extended break triggers without losin
 - **FR-005**: System MUST clear a pending extended break only after the user completes the full extended duration
 - **FR-006**: System MUST not apply a time-based duration override if the computer has been idle for longer than the configured extended duration after the specified time
 - **FR-007**: System MUST reset the consecutive break counter to zero if the computer has been idle for longer than the configured extended duration between breaks
-- **FR-008**: System MUST maintain the consecutive break counter when a break is skipped (not counting it as completion)
-- **FR-009**: System MUST persist all extended break trigger configurations across application restarts
-- **FR-010**: System MUST support both trigger types being enabled simultaneously
-- **FR-011**: System MUST apply the longest extended break duration when multiple trigger conditions are met on the same break
-- **FR-012**: System MUST apply the longest duration when multiple time-based triggers are applicable to the same break
-- **FR-013**: System MUST revert to the regular break duration after an extended break completes
-- **FR-014**: System MUST count skipped breaks toward the consecutive break counter for the purpose of determining when the next extended break occurs
-- **FR-015**: System MUST treat idle periods exceeding the extended duration as an implicit extended break that resets applicable triggers
-- **FR-016**: System MUST apply configuration changes immediately to any pending extended break triggers
+- **FR-008**: System MUST display break window with remaining time using extended duration, and show additional information indicating which trigger(s) activated (e.g., "Extended break - triggered by: Time (14:00)" or "Extended break - triggered by: Time (14:00), Consecutive breaks (5)" when multiple conditions met)
+- **FR-009**: System MUST maintain the consecutive break counter when a break is skipped (not counting it as completion)
+- **FR-010**: System MUST persist all extended break trigger configurations across application restarts
+- **FR-011**: System MUST support both trigger types being enabled simultaneously
+- **FR-012**: System MUST apply the longest extended break duration when multiple trigger conditions are met on the same break, and when multiple triggers have equal duration, all matching triggers apply and their information is shown in the break window
+- **FR-013**: System MUST apply the longest duration when multiple time-based triggers are applicable to the same break
+- **FR-014**: System MUST revert to the regular break duration after an extended break completes
+- **FR-015**: System MUST count skipped breaks toward the consecutive break counter for the purpose of determining when the next extended break occurs
+- **FR-016**: System MUST treat idle periods exceeding the extended duration as an implicit extended break that resets applicable triggers
 - **FR-017**: System MUST apply extended break duration overrides only to long breaks, not to microbreaks
 - **FR-018**: System MUST reset time-based triggers at midnight each day, making them eligible to trigger again
 - **FR-019**: System MUST use system clock time for all time-based trigger evaluations, without special handling for system time changes
 - **FR-020**: System MUST cancel an extended break and revert to regular duration if the computer goes to sleep during the extended break
-- **FR-021**: System MUST maintain pending extended break state when regular break interval settings are changed
+- **FR-021**: System MUST apply configuration changes immediately to the next break calculation, with breaks currently in progress continuing with their original duration
+- **FR-022**: System MUST implement error recovery when trigger data fails to load or parse (corrupt JSON, invalid UUID, malformed settings) by logging the error with details and treating trigger configuration as empty array for graceful degradation, allowing break scheduling to continue with default durations while users can reconfigure triggers through UI
 
 ### Key Entities
 

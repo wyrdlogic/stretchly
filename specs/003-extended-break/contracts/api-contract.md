@@ -35,12 +35,8 @@ Create a new extended break trigger and persist to settings.
 **Returns:** `ExtendedBreakTrigger` (created object with generated ID)
 
 **Throws:**
-- `Error('Invalid type')` - type not in allowed enum
-- `Error('timeOfDay required for time-of-day trigger')` - missing required field
-- `Error('breakCount required for break-count trigger')` - missing required field
-- `Error('Invalid time format')` - timeOfDay doesn't match HH:mm pattern
-- `Error('breakCount must be >= 2')` - below minimum threshold
-- `Error('Duration must be positive')` - duration <= 0
+- See Section 2 "Cross-Field Validation Rules" in `data-model.md` for complete validation error specifications
+- Common errors: Invalid type, missing required fields, invalid time format, breakCount < 2, non-positive duration
 
 **Example:**
 ```javascript

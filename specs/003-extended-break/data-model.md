@@ -86,6 +86,9 @@ This document defines the data model for extended break triggers feature, includ
 
 ## 2. Cross-Field Validation Rules
 
+**NOTE**: These validation rules are the single source of truth. API contracts in `contracts/api-contract.md` should reference these rules rather than duplicating them.
+
+
 ### Rule 1: Type-Specific Required Fields
 ```javascript
 function validateTrigger(trigger) {

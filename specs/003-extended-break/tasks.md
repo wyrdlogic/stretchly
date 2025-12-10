@@ -20,7 +20,7 @@
 **Purpose**: Project initialization and basic structure for extended break triggers
 
 - [ ] T001 Add `extendedBreakTriggers: []` to app/utils/defaultSettings.js
-- [ ] T002 [P] Create app/utils/extendedBreakTriggers.js with validation helper functions (validateTimeOfDay, validateBreakCount, validateDuration)
+- [ ] T002 [P] Create app/utils/extendedBreakTriggers.js with CRUD functions (createTrigger, getTriggers, getTriggerById, updateTrigger, deleteTrigger) and validation helpers (validateTimeOfDay, validateBreakCount, validateDuration)
 - [ ] T003 [P] Add i18n keys to app/locales/en.json for extended break triggers UI
 
 ---
@@ -131,7 +131,7 @@
 - [ ] T042 [US3] Add CSS styles for trigger table in app/css/preferences.css (table layout, button styles, checkbox styles)
 - [ ] T043 [US3] Implement `loadExtendedBreakTriggers()` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('get-extended-break-triggers')`
 - [ ] T044 [US3] Implement `renderTriggerTable(triggers)` function in app/preferences-renderer.js that populates table with trigger rows
-- [ ] T045 [US3] Add event listener for "Add Trigger" button in app/preferences-renderer.js that shows input prompts for type, condition, duration
+- [ ] T045 [US3] Add event listener for "Add Trigger" button in app/preferences-renderer.js that shows input prompts for type, condition, duration (follow existing pattern: use simple HTML form within preferences window, similar to break idea management)
 - [ ] T046 [US3] Implement `createNewTrigger(config)` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('create-extended-break-trigger')`
 - [ ] T047 [US3] Implement `updateTriggerEnabled(id, enabled)` async function in app/preferences-renderer.js for checkbox changes
 - [ ] T048 [US3] Implement `editTrigger(trigger)` function in app/preferences-renderer.js with prompt for duration modification
@@ -144,6 +144,13 @@
 - [ ] T052 [P] [US3] Copy i18n keys from en.json to other locale files (de.json, es.json, fr.json, etc.) with placeholders for translation
 
 **Checkpoint**: Full CRUD UI is functional - users can manage triggers without editing config files
+
+**Acceptance Criteria for UI Completion:**
+- All trigger CRUD operations work through preferences UI (create, read, update, delete)
+- Settings persist across app restart
+- No console errors during trigger operations
+- UI updates immediately after trigger changes
+- Validation errors shown to user with clear messages
 
 ---
 
@@ -161,6 +168,7 @@
 - [ ] T060 [P] Update CHANGELOG.md with feature description for next release
 - [ ] T061 Verify triggers persist across app restart (create trigger, restart app, verify trigger still exists)
 - [ ] T062 Test disabled trigger doesn't fire (create trigger, disable it, verify break uses regular duration)
+- [ ] T063 [P] Add error recovery in getTriggers() function in app/utils/extendedBreakTriggers.js with try/catch for corrupt data, log error with electron-log, return empty array on failure (implements FR-022)
 
 ---
 
@@ -331,7 +339,7 @@ git merge feature/us3-i18n
 
 **Total**: ~14-15 hours for complete implementation
 
-**MVP (US1 only)**: ~6.5 hours (Phases 1-3 only)
+**MVP (US1 only)**: ~7 hours (Phases 1-3 + error recovery from Phase 6)
 
 ### Task Count by Phase
 
@@ -340,11 +348,11 @@ git merge feature/us3-i18n
 - User Story 1: 16 tasks (5 tests, 7 implementation, 4 integration tests)
 - User Story 2: 11 tasks (3 tests, 3 implementation, 5 integration tests)
 - User Story 3: 16 tasks (4 IPC, 10 UI, 2 i18n)
-- Polish: 10 tasks
+- Polish: 11 tasks (includes error recovery T063)
 
-**Total**: 62 tasks
+**Total**: 63 tasks
 
-**Parallel Opportunities**: ~20 tasks can run in parallel (marked with [P])
+**Parallel Opportunities**: ~21 tasks can run in parallel (marked with [P])
 
 ---
 

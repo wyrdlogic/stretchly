@@ -202,7 +202,7 @@ this.naturalBreaksManager.on('clearBreakScheduler', () => {
 
 ### Decision
 
-"Longest duration wins" strategy - evaluate all enabled triggers, return maximum duration.
+"Longest duration wins" strategy - evaluate all enabled triggers, return maximum duration and collect all matching trigger information for display.
 
 ### Rationale
 
@@ -210,6 +210,7 @@ this.naturalBreaksManager.on('clearBreakScheduler', () => {
 - User intent: Configure multiple scenarios for longer breaks
 - No priority system needed - duration is inherent priority
 - Deterministic behavior - same triggers always produce same result
+- When multiple triggers match (including ties with equal duration), all trigger information is shown in break window (per FR-008)
 
 ### Implementation
 
@@ -219,23 +220,31 @@ _evaluateExtendedBreakTriggers () {
   const enabledTriggers = triggers.filter(t => t.enabled)
   
   let maxDuration = null
+  const matchingTriggers = []
   
   for (const trigger of enabledTriggers) {
     const duration = this._evaluateTrigger(trigger)
-    if (duration !== null && (maxDuration === null || duration > maxDuration)) {
-      maxDuration = duration
+    if (duration !== null) {
+      if (maxDuration === null || duration > maxDuration) {
+        maxDuration = duration
+        matchingTriggers.length = 0
+        matchingTriggers.push(trigger)
+      } else if (duration === maxDuration) {
+        matchingTriggers.push(trigger)
+      }
     }
   }
   
-  return maxDuration
+  return { duration: maxDuration, triggers: matchingTriggers }
 }
 ```
 
 ### Example Scenarios
 
-- Trigger A (time-of-day: 14:00, 10 min) + Trigger B (count: 3, 15 min) both active → 15 minutes used
-- Trigger C (time-of-day: 09:00, 20 min) + Trigger D (time-of-day: 09:30, 5 min) both active at 09:15 → 20 minutes (only C triggered)
-- No triggers active → returns `null`, falls back to default `breakDuration`
+- Trigger A (time-of-day: 14:00, 10 min) + Trigger B (count: 3, 15 min) both active → 15 minutes used, shows "triggered by: Consecutive breaks (3)"
+- Trigger C (time-of-day: 09:00, 10 min) + Trigger D (count: 5, 10 min) both active → 10 minutes used, shows "triggered by: Time (09:00), Consecutive breaks (5)" (both equal duration)
+- Trigger E (time-of-day: 09:00, 20 min) + Trigger F (time-of-day: 09:30, 5 min) both active at 09:15 → 20 minutes, shows "triggered by: Time (09:00)" (only E triggered)
+- No triggers active → returns `{ duration: null, triggers: [] }`, falls back to default `breakDuration`
 
 ---
 
