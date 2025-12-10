@@ -35,46 +35,48 @@
 **Content Quality Review**:
 
 - ✅ Spec focuses on "what" and "why" without technical implementation details
-- ✅ Written in business/user-friendly language describing friction mechanism, visual feedback, and user interactions
+- ✅ Written in business/user-friendly language describing friction mechanism, visual feedback, incremental difficulty, and user interactions
 - ✅ All three mandatory sections completed with concrete content
 
 **Requirement Completeness Review**:
 
 - ✅ No [NEEDS CLARIFICATION] markers - all requirements are specific and complete
-- ✅ All 36 functional requirements are testable and unambiguous:
-  - Configuration requirements (FR-001 to FR-006): Settings persistence, validation, defaults
-  - String generation requirements (FR-007 to FR-012): Random generation with character types
-  - Visual interface requirements (FR-013 to FR-020): Column layout, color feedback, theming
-  - Input validation requirements (FR-021 to FR-024): Character entry and correction behavior
-  - Skip behavior requirements (FR-025 to FR-029): Button visibility, skip action, backward compatibility
-  - Skip counter requirements (FR-030 to FR-036): Counter tracking, persistence, reset
+- ✅ All 51 functional requirements are testable and unambiguous:
+  - Configuration requirements (FR-001 to FR-010): Settings persistence, validation, defaults, incremental friction configuration
+  - String generation requirements (FR-011 to FR-019): Random generation with character types, word-based generation for incremental friction
+  - Visual interface requirements (FR-020 to FR-029): Column layout, color feedback, statistics display, theming
+  - Input validation requirements (FR-030 to FR-033): Character entry and correction behavior
+  - Skip behavior requirements (FR-034 to FR-038): Button visibility, skip action, backward compatibility
+  - Skip counter and tracking requirements (FR-039 to FR-051): Total and sequential counters, persistence, reset, independent tracking per break type
 - ✅ Success criteria include specific metrics (30 seconds, 1 second, 100ms, 100% accuracy, 100 characters)
 - ✅ Success criteria are technology-agnostic (focused on user experience, timing, accuracy)
-- ✅ All 3 user stories have detailed acceptance scenarios with Given/When/Then format
-- ✅ Edge cases identified cover visual similarity, character limits, copy-paste, theming, multi-monitor
-- ✅ Scope is clear: friction-based skip mechanism for strict mode with configurable difficulty
+- ✅ All 4 user stories have detailed acceptance scenarios with Given/When/Then format
+- ✅ Edge cases identified cover visual similarity, character limits, copy-paste, theming, multi-monitor, incremental friction edge cases, counter persistence
+- ✅ Scope is clear: friction-based skip mechanism with incremental difficulty based on sequential skip behavior, tracked separately for mini and long breaks
 - ✅ Dependencies noted: builds on existing strict mode feature (microbreakStrictMode, breakStrictMode)
 
 **Feature Readiness Review**:
 
 - ✅ Each functional requirement maps to acceptance scenarios in user stories
-- ✅ User scenarios cover configuration (P1), usage with visual feedback (P2), and tracking (P3) flows
-- ✅ Success criteria define measurable outcomes for responsiveness, accuracy, persistence, and usability
+- ✅ User scenarios cover configuration (P1), usage with visual feedback (P2), tracking/reset (P3), and statistics display (P3) flows
+- ✅ Success criteria define measurable outcomes for responsiveness, accuracy, persistence, usability, and incremental friction behavior
 - ✅ No technical leakage detected - spec describes behavior without prescribing implementation
 
-**Significant Changes from Previous Version**:
+**Significant Changes in This Update**:
 
-- Changed from password-based authentication to friction-based mechanism
-- Removed password confirmation and storage requirements
-- Added random string generation with character composition requirements
-- Added detailed visual feedback interface with color-coded columns
-- Added character-by-character input validation without clearing on errors
-- Added skip counter tracking and reset functionality
-- Changed default behavior to enabled (friction on by default)
-- Maintained separation between mini breaks and long breaks
+- Added incremental friction feature with progressive difficulty based on sequential skips
+- Added formula for word count: 1 + sequential skip count (capped at configurable maximum, default 5)
+- Added sequential skip counter that resets when break completes without skip
+- Added requirement for independent tracking of mini breaks and long breaks (both total and sequential counters)
+- Added statistics display on friction interface showing total and sequential skip counts
+- Added User Story 4 for viewing skip statistics during friction
+- Extended edge cases to cover incremental friction scenarios
+- Increased functional requirements from 36 to 51
+- Increased success criteria from 10 to 14
+- Enhanced Key Entities to include Total Skip Counter and Sequential Skip Counter as separate entities
 
 ## Conclusion
 
 **Status**: ✅ READY FOR PLANNING
 
-All checklist items pass validation. The specification is complete, unambiguous, and ready for `/speckit.clarify` or `/speckit.plan`. The updated spec correctly reflects the friction-based approach rather than password authentication.
+All checklist items pass validation. The specification is complete, unambiguous, and ready for `/speckit.clarify` or `/speckit.plan`. The updated spec correctly reflects the friction-based approach with incremental difficulty based on sequential skip behavior, tracked separately for mini and long breaks.
