@@ -193,5 +193,29 @@ describe('Friction Counters', () => {
       expect(mockSettings.microbreakSkipFrictionSequentialCount).toBe(0)
       expect(mockSettings.breakSkipFrictionSequentialCount).toBe(5)
     })
+
+    it('should reset both total and sequential counters together', () => {
+      mockSettings.microbreakSkipFrictionTotalCount = 15
+      mockSettings.microbreakSkipFrictionSequentialCount = 3
+
+      mockSettings.microbreakSkipFrictionTotalCount = 0
+      mockSettings.microbreakSkipFrictionSequentialCount = 0
+
+      expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(0)
+      expect(mockSettings.microbreakSkipFrictionSequentialCount).toBe(0)
+    })
+
+    it('should reset both break counters independently from microbreak', () => {
+      mockSettings.breakSkipFrictionTotalCount = 20
+      mockSettings.breakSkipFrictionSequentialCount = 4
+      mockSettings.microbreakSkipFrictionTotalCount = 10
+
+      mockSettings.breakSkipFrictionTotalCount = 0
+      mockSettings.breakSkipFrictionSequentialCount = 0
+
+      expect(mockSettings.breakSkipFrictionTotalCount).toBe(0)
+      expect(mockSettings.breakSkipFrictionSequentialCount).toBe(0)
+      expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(10)
+    })
   })
 })
