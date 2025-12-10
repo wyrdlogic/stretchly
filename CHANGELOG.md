@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - new icon styles preference for tray (showing time to break or visual progress to break)
 - Autostart functionality in Flatpaks
 - updated appExclusions section on README to include description for Windows and substring matching
+- **Strict Mode with Friction**: New friction feature that requires typing random characters to skip breaks, with configurable difficulty and incremental challenge
 
 ### Fixed
 - snap package not starting on Wayland

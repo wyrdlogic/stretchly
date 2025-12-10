@@ -139,6 +139,21 @@ When a break starts, you can postpone it once for 2 minutes (Mini breaks) or 5 m
 
 <img src="skip.png" height="340">
 
+### Strict Mode with Friction
+
+For extra accountability, enable **friction** in strict mode. When enabled, you'll need to type randomly generated characters to skip a break, making it intentionally inconvenient to bypass your healthy break habits.
+
+**Friction features:**
+- Configurable character length (1-50 characters)
+- Incremental difficulty: each consecutive skip adds another word to type
+- Maximum words limit (1-10) to prevent excessive friction
+- Real-time validation with visual feedback
+- Paste support (Ctrl+V) for accessibility
+- Escape key to cancel and return to break
+- Separate counters for Mini and Long breaks
+
+Friction settings are available in Preferences under the Strict Mode section for both Mini and Long breaks.
+
 Clicking the *Stretchly* icon in your tray area will display the current status of breaks, provide menu items with extra functionality, and link to the Preferences.
 
 <img src="tray.png" height="140">
@@ -199,6 +214,14 @@ Here are the preferences editable via the app. If values in the app does not sui
 - `break` - enable Long breaks
 - `microbreakStrictMode` - enable strict mode for Mini breaks
 - `breakStrictMode` - enable strict mode for Long breaks
+- `microbreakSkipFrictionEnabled` - require typing random characters to skip Mini breaks (strict mode friction)
+- `breakSkipFrictionEnabled` - require typing random characters to skip Long breaks (strict mode friction)
+- `microbreakSkipFrictionCharLength` - length of random string for Mini break friction (1-50)
+- `breakSkipFrictionCharLength` - length of random string for Long break friction (1-50)
+- `microbreakSkipFrictionIncrementalEnabled` - increase Mini break friction difficulty with consecutive skips
+- `breakSkipFrictionIncrementalEnabled` - increase Long break friction difficulty with consecutive skips
+- `microbreakSkipFrictionMaxWords` - maximum number of words for incremental Mini break friction (1-10)
+- `breakSkipFrictionMaxWords` - maximum number of words for incremental Long break friction (1-10)
 - `mainColor` - theme color code (for Long breaks),
 - `miniBreakColor` - theme color code (for Mini breaks),
 - `transparentMode` - show break windows as transparent

@@ -34,6 +34,8 @@ window.onload = async (event) => {
     const frictionContainer = document.querySelector('#friction-container')
     const frictionGrid = document.querySelector('#friction-grid')
     frictionGrid.innerHTML = ''
+    frictionGrid.setAttribute('role', 'form')
+    frictionGrid.setAttribute('aria-label', 'Friction challenge: Type the characters shown to skip break')
 
     document.querySelector('#friction-total-count').textContent = 'Total skips: ' + totalCount
     document.querySelector('#friction-sequential-count').textContent = 'Sequential: ' + sequentialCount
@@ -41,17 +43,23 @@ window.onload = async (event) => {
     targetStrings.forEach((targetString, wordIndex) => {
       const wordDiv = document.createElement('div')
       wordDiv.className = 'friction-word'
+      wordDiv.setAttribute('role', 'group')
+      wordDiv.setAttribute('aria-label', `Word ${wordIndex + 1} of ${targetStrings.length}`)
 
       const targetRow = document.createElement('div')
       targetRow.className = 'friction-row'
+      targetRow.setAttribute('aria-hidden', 'true')
 
       const inputRow = document.createElement('div')
       inputRow.className = 'friction-row'
+      inputRow.setAttribute('role', 'group')
+      inputRow.setAttribute('aria-label', `Input for word ${wordIndex + 1}`)
 
       for (let i = 0; i < targetString.length; i++) {
         const targetCol = document.createElement('div')
         targetCol.className = 'friction-column target-char'
         targetCol.textContent = targetString[i]
+        targetCol.setAttribute('aria-hidden', 'true')
         targetRow.appendChild(targetCol)
 
         const inputCol = document.createElement('div')
@@ -68,6 +76,8 @@ window.onload = async (event) => {
         input.tabIndex = 0
         input.dataset.wordIndex = wordIndex
         input.dataset.charIndex = i
+        input.setAttribute('aria-label', `Character ${i + 1} of word ${wordIndex + 1}: type ${targetString[i]}`)
+        input.setAttribute('aria-required', 'true')
 
         input.addEventListener('input', (e) => {
           const enteredChar = e.target.value
@@ -76,6 +86,7 @@ window.onload = async (event) => {
           if (enteredChar === expectedChar) {
             inputCol.classList.remove('empty', 'incorrect')
             inputCol.classList.add('correct')
+            e.target.setAttribute('aria-invalid', 'false')
 
             const nextInput = document.querySelector(`input[data-word-index="${wordIndex}"][data-char-index="${i + 1}"]`)
             if (nextInput) {
@@ -87,9 +98,11 @@ window.onload = async (event) => {
           } else if (enteredChar) {
             inputCol.classList.remove('empty', 'correct')
             inputCol.classList.add('incorrect')
+            e.target.setAttribute('aria-invalid', 'true')
           } else {
             inputCol.classList.remove('correct', 'incorrect')
             inputCol.classList.add('empty')
+            e.target.removeAttribute('aria-invalid')
           }
 
           checkAllCorrect()
@@ -106,6 +119,41 @@ window.onload = async (event) => {
               if (prevWordInput) prevWordInput.focus()
             }
           }
+        })
+
+        input.addEventListener('paste', (e) => {
+          e.preventDefault()
+          const pastedText = e.clipboardData.getData('text')
+          if (!pastedText) return
+
+          const allInputs = Array.from(frictionGrid.querySelectorAll('input'))
+          const currentIndex = allInputs.indexOf(input)
+
+          for (let j = 0; j < pastedText.length && currentIndex + j < allInputs.length; j++) {
+            const targetInput = allInputs[currentIndex + j]
+            const targetWordIndex = parseInt(targetInput.dataset.wordIndex)
+            const targetCharIndex = parseInt(targetInput.dataset.charIndex)
+            const expectedChar = targetStrings[targetWordIndex][targetCharIndex]
+            const pastedChar = pastedText[j]
+
+            targetInput.value = pastedChar
+            const inputColumn = targetInput.parentElement
+
+            if (pastedChar === expectedChar) {
+              inputColumn.classList.remove('empty', 'incorrect')
+              inputColumn.classList.add('correct')
+            } else {
+              inputColumn.classList.remove('empty', 'correct')
+              inputColumn.classList.add('incorrect')
+            }
+          }
+
+          const lastFilledIndex = Math.min(currentIndex + pastedText.length, allInputs.length - 1)
+          if (allInputs[lastFilledIndex]) {
+            allInputs[lastFilledIndex].focus()
+          }
+
+          checkAllCorrect()
         })
 
         inputCol.addEventListener('click', () => {
@@ -140,6 +188,12 @@ window.onload = async (event) => {
     document.querySelector('.breaks > :nth-child(2)').classList.add('hidden')
     frictionContainer.classList.remove('hidden')
 
+    frictionContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelector('#friction-cancel').click()
+      }
+    })
+
     setTimeout(() => {
       const firstInput = document.querySelector('input[data-word-index="0"][data-char-index="0"]')
       console.log('Attempting to focus first input:', firstInput)
@@ -161,10 +215,16 @@ window.onload = async (event) => {
   }
 
   document.querySelector('#friction-skip').onclick = async () => {
-    await window.settings.saveSettings('microbreakSkipFrictionTotalCount',
-      (await window.settings.get('microbreakSkipFrictionTotalCount')) + 1)
-    await window.settings.saveSettings('microbreakSkipFrictionSequentialCount',
-      (await window.settings.get('microbreakSkipFrictionSequentialCount')) + 1)
+    const currentTotalCount = await window.settings.get('microbreakSkipFrictionTotalCount')
+    const currentSequentialCount = await window.settings.get('microbreakSkipFrictionSequentialCount')
+
+    if (currentTotalCount < Number.MAX_SAFE_INTEGER) {
+      await window.settings.saveSettings('microbreakSkipFrictionTotalCount', currentTotalCount + 1)
+    }
+    if (currentSequentialCount < Number.MAX_SAFE_INTEGER) {
+      await window.settings.saveSettings('microbreakSkipFrictionSequentialCount', currentSequentialCount + 1)
+    }
+
     await window.breaks.finishBreak()
   }
 

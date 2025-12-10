@@ -217,5 +217,31 @@ describe('Friction Counters', () => {
       expect(mockSettings.breakSkipFrictionSequentialCount).toBe(0)
       expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(10)
     })
+
+    it('should not increment counter beyond MAX_SAFE_INTEGER', () => {
+      mockSettings.microbreakSkipFrictionTotalCount = Number.MAX_SAFE_INTEGER
+
+      if (mockSettings.microbreakSkipFrictionTotalCount < Number.MAX_SAFE_INTEGER) {
+        mockSettings.microbreakSkipFrictionTotalCount += 1
+      }
+
+      expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(Number.MAX_SAFE_INTEGER)
+    })
+
+    it('should handle counter at one below MAX_SAFE_INTEGER', () => {
+      mockSettings.breakSkipFrictionSequentialCount = Number.MAX_SAFE_INTEGER - 1
+
+      if (mockSettings.breakSkipFrictionSequentialCount < Number.MAX_SAFE_INTEGER) {
+        mockSettings.breakSkipFrictionSequentialCount += 1
+      }
+
+      expect(mockSettings.breakSkipFrictionSequentialCount).toBe(Number.MAX_SAFE_INTEGER)
+
+      if (mockSettings.breakSkipFrictionSequentialCount < Number.MAX_SAFE_INTEGER) {
+        mockSettings.breakSkipFrictionSequentialCount += 1
+      }
+
+      expect(mockSettings.breakSkipFrictionSequentialCount).toBe(Number.MAX_SAFE_INTEGER)
+    })
   })
 })

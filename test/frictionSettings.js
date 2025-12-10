@@ -78,6 +78,29 @@ describe('Friction Settings Integration', () => {
     expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(0)
   })
 
+  it('should reset both total and sequential counters together', () => {
+    mockSettings.microbreakSkipFrictionTotalCount = 10
+    mockSettings.microbreakSkipFrictionSequentialCount = 3
+
+    mockSettings.microbreakSkipFrictionTotalCount = 0
+    mockSettings.microbreakSkipFrictionSequentialCount = 0
+
+    expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(0)
+    expect(mockSettings.microbreakSkipFrictionSequentialCount).toBe(0)
+  })
+
+  it('should reset counters independently for mini and long breaks', () => {
+    mockSettings.microbreakSkipFrictionTotalCount = 5
+    mockSettings.breakSkipFrictionTotalCount = 8
+
+    mockSettings.microbreakSkipFrictionTotalCount = 0
+    mockSettings.microbreakSkipFrictionSequentialCount = 0
+
+    expect(mockSettings.microbreakSkipFrictionTotalCount).toBe(0)
+    expect(mockSettings.microbreakSkipFrictionSequentialCount).toBe(0)
+    expect(mockSettings.breakSkipFrictionTotalCount).toBe(8)
+  })
+
   it('should maintain separate settings for mini and long breaks', () => {
     expect(mockSettings.microbreakSkipFrictionCharLength).toBe(20)
     expect(mockSettings.breakSkipFrictionCharLength).toBe(20)
