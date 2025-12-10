@@ -13,6 +13,8 @@ class BreaksPlanner extends EventEmitter {
     this.postponesNumber = 0
     this.scheduler = null
     this.isPaused = false
+    this.lastTriggerEvaluationDate = new Date().toDateString()
+    this.triggeredTodayIds = new Set()
     this.naturalBreaksManager = new NaturalBreaksManager(settings)
     this.dndManager = new DndManager(settings)
     this.appExclusionsManager = new AppExclusionsManager(settings)
@@ -24,7 +26,7 @@ class BreaksPlanner extends EventEmitter {
     })
 
     this.on('breakStarted', (shouldPlaySound) => {
-      const interval = this.settings.get('breakDuration')
+      const interval = this._getBreakDuration()
       this.scheduler = new Scheduler(() => this.emit('finishBreak', shouldPlaySound, true), interval, 'finishBreak')
       this.scheduler.plan()
     })
@@ -315,6 +317,92 @@ class BreaksPlanner extends EventEmitter {
 
     const progress = 1 - (remaining / total)
     return Math.max(0, Math.min(100, Math.round(progress * 100)))
+  }
+
+  _resetDailyStateIfNeeded () {
+    const currentDate = new Date().toDateString()
+    if (currentDate !== this.lastTriggerEvaluationDate) {
+      this.triggeredTodayIds.clear()
+      this.lastTriggerEvaluationDate = currentDate
+      log.info('Stretchly: reset daily extended break trigger state')
+    }
+  }
+
+  _evaluateTimeOfDayTrigger (trigger) {
+    const now = new Date()
+    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+
+    if (this.triggeredTodayIds.has(trigger.id)) {
+      return null
+    }
+
+    if (currentTime >= trigger.timeOfDay) {
+      this.triggeredTodayIds.add(trigger.id)
+      log.info(`Stretchly: extended break triggered (time-of-day: ${trigger.timeOfDay}), duration: ${trigger.duration / 60000}min`)
+      return { duration: trigger.duration, trigger }
+    }
+
+    return null
+  }
+
+  _evaluateBreakCountTrigger (trigger) {
+    if (this.breakNumber > 0 && this.breakNumber % trigger.breakCount === 0) {
+      log.info(`Stretchly: extended break triggered (consecutive breaks: ${trigger.breakCount}), duration: ${trigger.duration / 60000}min`)
+      return { duration: trigger.duration, trigger }
+    }
+    return null
+  }
+
+  _evaluateSingleTrigger (trigger) {
+    if (!trigger.enabled) {
+      return null
+    }
+
+    if (trigger.type === 'time-of-day') {
+      return this._evaluateTimeOfDayTrigger(trigger)
+    } else if (trigger.type === 'break-count') {
+      return this._evaluateBreakCountTrigger(trigger)
+    }
+
+    return null
+  }
+
+  _evaluateExtendedBreakTriggers () {
+    this._resetDailyStateIfNeeded()
+
+    const triggers = this.settings.get('extendedBreakTriggers')
+    if (!Array.isArray(triggers) || triggers.length === 0) {
+      return { duration: null, triggers: [] }
+    }
+
+    let maxDuration = null
+    const matchingTriggers = []
+
+    for (const trigger of triggers) {
+      const result = this._evaluateSingleTrigger(trigger)
+      if (result !== null) {
+        if (maxDuration === null || result.duration > maxDuration) {
+          maxDuration = result.duration
+          matchingTriggers.length = 0
+          matchingTriggers.push(result.trigger)
+        } else if (result.duration === maxDuration) {
+          matchingTriggers.push(result.trigger)
+        }
+      }
+    }
+
+    return { duration: maxDuration, triggers: matchingTriggers }
+  }
+
+  _getBreakDuration () {
+    const baseDuration = this.settings.get('breakDuration')
+
+    if (this._scheduledBreakType !== 'break') {
+      return baseDuration
+    }
+
+    const { duration } = this._evaluateExtendedBreakTriggers()
+    return duration || baseDuration
   }
 }
 

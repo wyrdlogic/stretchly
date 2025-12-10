@@ -19,9 +19,9 @@
 
 **Purpose**: Project initialization and basic structure for extended break triggers
 
-- [ ] T001 Add `extendedBreakTriggers: []` to app/utils/defaultSettings.js
-- [ ] T002 [P] Create app/utils/extendedBreakTriggers.js with CRUD functions (createTrigger, getTriggers, getTriggerById, updateTrigger, deleteTrigger) and validation helpers (validateTimeOfDay, validateBreakCount, validateDuration)
-- [ ] T003 [P] Add i18n keys to app/locales/en.json for extended break triggers UI
+- [X] T001 Add `extendedBreakTriggers: []` to app/utils/defaultSettings.js
+- [X] T002 [P] Create app/utils/extendedBreakTriggers.js with CRUD functions (createTrigger, getTriggers, getTriggerById, updateTrigger, deleteTrigger) and validation helpers (validateTimeOfDay, validateBreakCount, validateDuration)
+- [X] T003 [P] Add i18n keys to app/locales/en.json for extended break triggers UI
 
 ---
 
@@ -31,12 +31,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement `createTrigger(settings, config)` in app/utils/extendedBreakTriggers.js
-- [ ] T005 [P] Implement `getTriggers(settings)` in app/utils/extendedBreakTriggers.js
-- [ ] T006 [P] Implement `getTriggerById(settings, id)` in app/utils/extendedBreakTriggers.js
-- [ ] T007 [P] Implement `updateTrigger(settings, id, updates)` in app/utils/extendedBreakTriggers.js
-- [ ] T008 [P] Implement `deleteTrigger(settings, id)` in app/utils/extendedBreakTriggers.js
-- [ ] T009 Add state tracking properties to BreaksPlanner constructor in app/breaksPlanner.js: `this.lastTriggerEvaluationDate = new Date().toDateString()` and `this.triggeredTodayIds = new Set()`
+- [X] T004 Implement `createTrigger(settings, config)` in app/utils/extendedBreakTriggers.js
+- [X] T005 [P] Implement `getTriggers(settings)` in app/utils/extendedBreakTriggers.js
+- [X] T006 [P] Implement `getTriggerById(settings, id)` in app/utils/extendedBreakTriggers.js
+- [X] T007 [P] Implement `updateTrigger(settings, id, updates)` in app/utils/extendedBreakTriggers.js
+- [X] T008 [P] Implement `deleteTrigger(settings, id)` in app/utils/extendedBreakTriggers.js
+- [X] T009 Add state tracking properties to BreaksPlanner constructor in app/breaksPlanner.js: `this.lastTriggerEvaluationDate = new Date().toDateString()` and `this.triggeredTodayIds = new Set()`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -60,13 +60,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Implement `_resetDailyStateIfNeeded()` private method in app/breaksPlanner.js to check date change and clear `triggeredTodayIds`
-- [ ] T016 [US1] Implement `_evaluateTimeOfDayTrigger(trigger)` private method in app/breaksPlanner.js to match current time and check `triggeredTodayIds`
-- [ ] T017 [US1] Implement `_evaluateSingleTrigger(trigger)` private method in app/breaksPlanner.js that delegates to `_evaluateTimeOfDayTrigger` based on trigger type
-- [ ] T018 [US1] Implement `_evaluateExtendedBreakTriggers()` private method in app/breaksPlanner.js that iterates enabled triggers and returns max duration
-- [ ] T019 [US1] Implement `_getBreakDuration()` private method in app/breaksPlanner.js that checks `_scheduledBreakType === 'break'` and calls `_evaluateExtendedBreakTriggers()`
-- [ ] T020 [US1] Modify `this.on('breakStarted')` event handler in app/breaksPlanner.js to use `this._getBreakDuration()` instead of `this.settings.get('breakDuration')`
-- [ ] T021 [US1] Add electron-log statements in `_evaluateTimeOfDayTrigger` to log trigger activation with time and duration
+- [X] T015 [US1] Implement `_resetDailyStateIfNeeded()` private method in app/breaksPlanner.js to check date change and clear `triggeredTodayIds`
+- [X] T016 [US1] Implement `_evaluateTimeOfDayTrigger(trigger)` private method in app/breaksPlanner.js to match current time and check `triggeredTodayIds`
+- [X] T017 [US1] Implement `_evaluateSingleTrigger(trigger)` private method in app/breaksPlanner.js that delegates to `_evaluateTimeOfDayTrigger` based on trigger type
+- [X] T018 [US1] Implement `_evaluateExtendedBreakTriggers()` private method in app/breaksPlanner.js that iterates enabled triggers and returns max duration
+- [X] T019 [US1] Implement `_getBreakDuration()` private method in app/breaksPlanner.js that checks `_scheduledBreakType === 'break'` and calls `_evaluateExtendedBreakTriggers()`
+- [X] T020 [US1] Modify `this.on('breakStarted')` event handler in app/breaksPlanner.js to use `this._getBreakDuration()` instead of `this.settings.get('breakDuration')`
+- [X] T021 [US1] Add electron-log statements in `_evaluateTimeOfDayTrigger` to log trigger activation with time and duration
 
 ### Integration Tests for User Story 1
 

@@ -9,7 +9,8 @@
 
 **Primary Requirement**: Enable users to configure one-time break duration extensions that trigger based on time-of-day (e.g., "first long break at or after 2:00 PM becomes 10 minutes") or consecutive break count (e.g., "every 3rd long break extends to 15 minutes").
 
-**Technical Approach**: 
+**Technical Approach**:
+
 - Add new settings key `extendedBreakTriggers` as array in electron-store
 - Extend BreaksPlanner with trigger evaluation logic in existing `breakStarted` event handler
 - Inject duration override before Scheduler creation (minimal change, preserves event flow)
@@ -25,16 +26,17 @@
 **Target Platform**: Cross-platform desktop (Windows, macOS, Linux via Electron)  
 **Project Type**: Single desktop application (Electron main + renderer processes)  
 **Performance Goals**: Trigger evaluation <5ms per break (negligible impact on break scheduling)  
-**Constraints**: 
-  - Event-driven architecture (EventEmitter-based)
-  - StandardJS code style NON-NEGOTIABLE (no semicolons, 2-space indent, single quotes)
-  - ES Modules only (`.js` extensions required in imports)
-  - Cross-platform compatibility (no platform-specific APIs except where abstracted)
-  - Accessibility (keyboard navigation, screen reader support)
-**Scale/Scope**: 
-  - Single feature module (1 new util file, extend 3 existing files, 1 new UI section)
-  - Expected trigger count: 1-10 per user (optimize for small arrays)
-  - Integration points: BreaksPlanner, preferences UI, settings persistence
+**Constraints**:
+
+- Event-driven architecture (EventEmitter-based)
+- StandardJS code style NON-NEGOTIABLE (no semicolons, 2-space indent, single quotes)
+- ES Modules only (`.js` extensions required in imports)
+- Cross-platform compatibility (no platform-specific APIs except where abstracted)
+- Accessibility (keyboard navigation, screen reader support)
+**Scale/Scope**:
+- Single feature module (1 new util file, extend 3 existing files, 1 new UI section)
+- Expected trigger count: 1-10 per user (optimize for small arrays)
+- Integration points: BreaksPlanner, preferences UI, settings persistence
 
 ## Constitution Check
 
@@ -43,56 +45,67 @@
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 ### Principle I: User Health First ✅ PASS
+
 **Evaluation**: Extended break triggers directly serve the mission by allowing users to customize break durations based on their personal health needs and work patterns. Time-of-day triggers accommodate natural energy rhythms (e.g., longer afternoon breaks), while count-based triggers provide regular deeper breaks during extended work sessions.
 
 **Justification**: This feature enhances the core break reminder functionality rather than distracting from it. No bloat introduced - minimal code change, focused on break duration optimization.
 
 ### Principle II: Cross-Platform Consistency ✅ PASS
+
 **Evaluation**: Implementation uses only standard JavaScript Date API and Electron platform-agnostic APIs (electron-store, EventEmitter). No platform-specific code required. Trigger evaluation logic identical on all platforms. UI uses existing Electron HTML/CSS patterns already tested cross-platform.
 
 **Compliance**: All integration points (BreaksPlanner, Settings, IPC) already work identically across Windows, macOS, Linux. No new platform-specific abstractions needed.
 
 ### Principle III: StandardJS Code Style ✅ PASS
+
 **Evaluation**: All code examples in research.md and quickstart.md follow StandardJS: no semicolons, 2-space indentation, single quotes, arrow functions, template literals. Code self-documenting (minimal comments).
 
 **Compliance**: `npm run lint` will be run before PR merge. All new code in `extendedBreakTriggers.js` and BreaksPlanner methods follows existing codebase patterns.
 
 ### Principle IV: ES Modules Only ✅ PASS
+
 **Evaluation**: All imports use ES Module syntax with explicit `.js` extensions (e.g., `import { createTrigger } from './utils/extendedBreakTriggers.js'`). No CommonJS usage. Export pattern matches existing codebase (`export default`, named exports).
 
 **Compliance**: Module structure identical to existing utils (scheduler.js, naturalBreaksManager.js patterns).
 
 ### Principle V: Testing Before Merging ✅ PASS
+
 **Evaluation**: Comprehensive test plan in quickstart.md includes:
-  - Unit tests for CRUD operations (createTrigger, updateTrigger, deleteTrigger)
-  - Unit tests for trigger evaluation logic (time-of-day, break-count, conflict resolution)
-  - Integration tests for BreaksPlanner interaction
-  - All tests use Vitest + chai (existing framework)
-  - Tests in `test/extendedBreakTriggers.js` matching source file pattern
+
+- Unit tests for CRUD operations (createTrigger, updateTrigger, deleteTrigger)
+- Unit tests for trigger evaluation logic (time-of-day, break-count, conflict resolution)
+- Integration tests for BreaksPlanner interaction
+- All tests use Vitest + chai (existing framework)
+- Tests in `test/extendedBreakTriggers.js` matching source file pattern
 
 **Compliance**: Critical functionality (trigger evaluation, settings persistence) has full test coverage. Tests must pass before PR merge.
 
 ### Principle VI: Accessibility ✅ PASS
+
 **Evaluation**: Preferences UI follows existing patterns:
-  - Table structure with semantic HTML (`<table>`, `<th>`, `<td>`)
-  - Buttons accessible via keyboard (standard `<button>` elements)
-  - i18n keys for all UI text (screen reader compatible)
-  - Checkbox for enable/disable (standard control)
-  - Existing preferences window already keyboard-navigable
+
+- Table structure with semantic HTML (`<table>`, `<th>`, `<td>`)
+- Buttons accessible via keyboard (standard `<button>` elements)
+- i18n keys for all UI text (screen reader compatible)
+- Checkbox for enable/disable (standard control)
+- Existing preferences window already keyboard-navigable
 
 **Compliance**: No new accessibility barriers introduced. All UI elements reuse existing accessible components.
 
 ### Principle VII: Performance ✅ PASS
+
 **Evaluation**: Trigger evaluation is O(n) where n = number of triggers (expected 1-10):
-  - Evaluated only when long break starts (~every 30-60 minutes)
-  - Simple iteration with early exit conditions
-  - No background timers or continuous polling
-  - Midnight reset uses string comparison (trivial cost)
-  - Settings read from in-memory electron-store cache (no disk I/O per evaluation)
+
+- Evaluated only when long break starts (~every 30-60 minutes)
+- Simple iteration with early exit conditions
+- No background timers or continuous polling
+- Midnight reset uses string comparison (trivial cost)
+- Settings read from in-memory electron-store cache (no disk I/O per evaluation)
 
 **Compliance**: <5ms evaluation time for 10 triggers (negligible impact on break scheduling). No performance degradation.
 
 ### Summary: ALL GATES PASSED ✅
+
 No constitution violations. No complexity justification required. Feature aligns with all core principles.
 
 **Re-evaluation After Phase 1 Design**: All principles still satisfied. Data model and API contracts maintain compliance with constitution requirements.
@@ -151,6 +164,7 @@ app/css/
 ```
 
 **Structure Decision**: Single Electron application (existing structure). This feature extends existing codebase with:
+
 - **1 new utility module** (`extendedBreakTriggers.js`) for trigger management logic
 - **3 modified core files** (BreaksPlanner for evaluation, main.js for IPC, preferences for UI)
 - **2 new test files** matching source structure pattern
@@ -211,12 +225,14 @@ All research documented in [research.md](research.md) with alternatives consider
 Full entity schema defined in [data-model.md](data-model.md). Summary:
 
 **ExtendedBreakTrigger Entity:**
+
 - Fields: id (UUID), enabled (bool), type (enum), timeOfDay (string?), breakCount (number?), duration (number)
 - Validation: Cross-field rules, format validation, uniqueness constraints
 - State Management: In-memory (`triggeredTodayIds`, `lastTriggerEvaluationDate`) + Persisted (`extendedBreakTriggers` array)
 - Lifecycle: CRUD operations with validation at each step
 
 **State Machines:**
+
 - Time-of-Day: Created → Enabled & Waiting → Triggered → Used Today → [Midnight Reset] → Enabled & Waiting
 - Break-Count: Created → Enabled & Counting → Triggered → [Idle Reset] → Enabled & Counting
 
@@ -225,6 +241,7 @@ Full entity schema defined in [data-model.md](data-model.md). Summary:
 Full contracts defined in [contracts/api-contract.md](contracts/api-contract.md). Summary:
 
 **Settings CRUD API** (5 functions in `app/utils/extendedBreakTriggers.js`):
+
 - `createTrigger(settings, config)` → ExtendedBreakTrigger
 - `getTriggers(settings)` → Array<ExtendedBreakTrigger>
 - `getTriggerById(settings, id)` → ExtendedBreakTrigger | null
@@ -232,6 +249,7 @@ Full contracts defined in [contracts/api-contract.md](contracts/api-contract.md)
 - `deleteTrigger(settings, id)` → void
 
 **Trigger Evaluation API** (6 private methods in `app/breaksPlanner.js`):
+
 - `_getBreakDuration()` → number (entry point)
 - `_evaluateExtendedBreakTriggers()` → number | null
 - `_evaluateSingleTrigger(trigger)` → number | null
@@ -240,6 +258,7 @@ Full contracts defined in [contracts/api-contract.md](contracts/api-contract.md)
 - `_resetDailyStateIfNeeded()` → void
 
 **IPC Communication API** (4 channels):
+
 - `get-extended-break-triggers` → { success, data }
 - `create-extended-break-trigger` → { success, data } | { success: false, error }
 - `update-extended-break-trigger` → { success, data } | { success: false, error }
@@ -248,6 +267,7 @@ Full contracts defined in [contracts/api-contract.md](contracts/api-contract.md)
 ### Developer Quickstart
 
 Implementation guide with 10 steps provided in [quickstart.md](quickstart.md):
+
 1. Add default setting
 2. Create trigger management utilities
 3. Extend BreaksPlanner with evaluation logic
@@ -291,6 +311,7 @@ The tasks command will break down the implementation into atomic, testable work 
 ### Constitution Compliance
 
 All 7 core principles verified:
+
 - ✅ User Health First (enhances core mission)
 - ✅ Cross-Platform Consistency (no platform-specific code)
 - ✅ StandardJS Code Style (all examples compliant)
