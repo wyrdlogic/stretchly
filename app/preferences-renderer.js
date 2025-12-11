@@ -1,9 +1,10 @@
-/* global confirm */
 import VersionChecker from './utils/versionChecker.js'
 import { setSameWidths } from './utils/sameWidths.js'
 import HtmlTranslate from './utils/htmlTranslate.js'
 
 import './platform.js'
+
+/* global confirm */
 
 const versionChecker = new VersionChecker()
 let eventsAttached = false
@@ -448,214 +449,238 @@ window.onload = async (e) => {
     return microbreakInterval * (breakInterval + 1)
   }
 
-  // Extended Break Triggers
   async function loadExtendedBreakTriggers () {
-    const result = await window.stretchly.getExtendedBreakTriggers()
-    if (result.success) {
-      renderTriggerTable(result.data)
-    } else {
-      console.error('Failed to load extended break triggers:', result.error)
+    try {
+      const response = await window.stretchly.getExtendedBreakTriggers()
+      if (response && response.success) {
+        await renderTriggerTable(response.data || [])
+      } else {
+        console.error('Failed to load triggers:', response?.error)
+        await renderTriggerTable([])
+      }
+    } catch (error) {
+      console.error('Error loading extended break triggers:', error)
+      await renderTriggerTable([])
     }
   }
 
-  function renderTriggerTable (triggers) {
-    const tbody = document.getElementById('extendedBreakTriggersBody')
+  async function renderTriggerTable (triggers) {
+    const tbody = document.querySelector('#extendedBreakTriggersBody')
     tbody.innerHTML = ''
 
     if (triggers.length === 0) {
       const row = tbody.insertRow()
-      row.className = 'no-triggers'
       const cell = row.insertCell()
-      cell.colSpan = 5
-      cell.setAttribute('data-i18next', 'preferences.settings.noTriggersConfigured')
-      window.i18next.t('preferences.settings.noTriggersConfigured').then(text => {
-        cell.textContent = text
-      })
+      cell.colSpan = 4
+      cell.textContent = await window.i18next.t('preferences.schedule.noTriggersConfigured')
+      cell.style.textAlign = 'center'
+      cell.style.fontStyle = 'italic'
+      cell.style.color = 'var(--main-color)'
       return
     }
 
-    triggers.forEach(trigger => {
+    for (const trigger of triggers) {
       const row = tbody.insertRow()
-
-      const enabledCell = row.insertCell()
-      const enabledCheckbox = document.createElement('input')
-      enabledCheckbox.type = 'checkbox'
-      enabledCheckbox.checked = trigger.enabled
-      enabledCheckbox.onchange = () => updateTriggerEnabled(trigger.id, enabledCheckbox.checked)
-      enabledCell.appendChild(enabledCheckbox)
 
       const typeCell = row.insertCell()
       if (trigger.type === 'time-of-day') {
-        window.i18next.t('preferences.settings.triggerTypeTimeOfDay').then(text => {
-          typeCell.textContent = text
-        })
-      } else {
-        window.i18next.t('preferences.settings.triggerTypeBreakCount').then(text => {
-          typeCell.textContent = text
-        })
+        typeCell.textContent = await window.i18next.t('preferences.schedule.triggerTypeTimeOfDay')
+      } else if (trigger.type === 'break-count') {
+        typeCell.textContent = await window.i18next.t('preferences.schedule.triggerTypeBreakCount')
       }
 
       const conditionCell = row.insertCell()
-      conditionCell.textContent = trigger.type === 'time-of-day'
-        ? trigger.timeOfDay
-        : `${trigger.breakCount} breaks`
+      if (trigger.type === 'time-of-day') {
+        conditionCell.textContent = trigger.timeOfDay || '-'
+      } else if (trigger.type === 'break-count') {
+        conditionCell.textContent = trigger.breakCount || '-'
+      }
 
       const durationCell = row.insertCell()
-      durationCell.textContent = `${trigger.duration / 60000} min`
+      const minutes = Math.floor(trigger.duration / 60000)
+      durationCell.textContent = await window.i18next.t('utils.minutes', { count: minutes })
 
       const actionsCell = row.insertCell()
       const editButton = document.createElement('button')
-      window.i18next.t('preferences.settings.editTrigger').then(text => {
-        editButton.textContent = text
-      })
-      editButton.onclick = () => editTrigger(trigger)
-      actionsCell.appendChild(editButton)
+      editButton.type = 'button'
+      editButton.textContent = await window.i18next.t('preferences.schedule.editTrigger')
+      editButton.dataset.triggerId = trigger.id
+      editButton.classList.add('edit-trigger')
 
       const deleteButton = document.createElement('button')
-      window.i18next.t('preferences.settings.deleteTrigger').then(text => {
-        deleteButton.textContent = text
-      })
-      deleteButton.onclick = () => deleteTriggerById(trigger.id)
+      deleteButton.type = 'button'
+      deleteButton.textContent = await window.i18next.t('preferences.schedule.deleteTrigger')
+      deleteButton.dataset.triggerId = trigger.id
+      deleteButton.classList.add('delete-trigger')
+
+      actionsCell.appendChild(editButton)
+      actionsCell.appendChild(document.createTextNode(' '))
       actionsCell.appendChild(deleteButton)
-    })
-  }
-
-  // Modal Management
-  let currentEditingTriggerId = null
-  const modal = document.getElementById('triggerModal')
-  const modalTitle = document.getElementById('modalTitle')
-  const triggerTypeSelect = document.getElementById('triggerType')
-  const timeOfDayGroup = document.getElementById('timeOfDayGroup')
-  const breakCountGroup = document.getElementById('breakCountGroup')
-  const triggerTimeOfDayInput = document.getElementById('triggerTimeOfDay')
-  const triggerBreakCountInput = document.getElementById('triggerBreakCount')
-  const triggerDurationInput = document.getElementById('triggerDuration')
-  const modalSaveBtn = document.getElementById('modalSave')
-  const modalCancelBtn = document.getElementById('modalCancel')
-
-  triggerTypeSelect.onchange = () => {
-    if (triggerTypeSelect.value === 'time-of-day') {
-      timeOfDayGroup.classList.add('active')
-      breakCountGroup.classList.remove('active')
-    } else {
-      timeOfDayGroup.classList.remove('active')
-      breakCountGroup.classList.add('active')
     }
   }
 
-  function openModal (editTrigger = null) {
-    currentEditingTriggerId = editTrigger ? editTrigger.id : null
+  function openTriggerModal (mode, trigger = null) {
+    const modal = document.querySelector('#triggerModal')
+    const form = document.querySelector('#triggerForm')
+    const modalTitle = document.querySelector('#modalTitle')
+    const typeSelect = document.querySelector('#triggerType')
+    const timeOfDayInput = document.querySelector('#timeOfDay')
+    const breakCountInput = document.querySelector('#breakCount')
+    const durationInput = document.querySelector('#triggerDuration')
+    const timeOfDayGroup = document.querySelector('#timeOfDayGroup')
+    const breakCountGroup = document.querySelector('#breakCountGroup')
 
-    if (editTrigger) {
-      window.i18next.t('preferences.settings.editTriggerTitle').then(text => {
-        modalTitle.textContent = text
-      })
-      triggerTypeSelect.value = editTrigger.type
-      triggerTypeSelect.disabled = true
+    form.reset()
+    form.dataset.mode = mode
+    if (trigger) {
+      form.dataset.triggerId = trigger.id
+    } else {
+      delete form.dataset.triggerId
+    }
 
-      if (editTrigger.type === 'time-of-day') {
-        timeOfDayGroup.classList.add('active')
-        breakCountGroup.classList.remove('active')
-        triggerTimeOfDayInput.value = editTrigger.timeOfDay
-      } else {
-        timeOfDayGroup.classList.remove('active')
-        breakCountGroup.classList.add('active')
-        triggerBreakCountInput.value = editTrigger.breakCount
+    if (mode === 'edit' && trigger) {
+      modalTitle.setAttribute('data-i18next', 'preferences.schedule.editTriggerTitle')
+      typeSelect.value = trigger.type
+      if (trigger.type === 'time-of-day') {
+        timeOfDayInput.value = trigger.timeOfDay
+        timeOfDayGroup.style.display = 'block'
+        breakCountGroup.style.display = 'none'
+      } else if (trigger.type === 'break-count') {
+        breakCountInput.value = trigger.breakCount
+        timeOfDayGroup.style.display = 'none'
+        breakCountGroup.style.display = 'block'
       }
-      triggerDurationInput.value = editTrigger.duration / 60000
+      durationInput.value = Math.floor(trigger.duration / 60000)
     } else {
-      window.i18next.t('preferences.settings.addTrigger').then(text => {
-        modalTitle.textContent = text
-      })
-      triggerTypeSelect.value = 'time-of-day'
-      triggerTypeSelect.disabled = false
-      timeOfDayGroup.classList.add('active')
-      breakCountGroup.classList.remove('active')
-      triggerTimeOfDayInput.value = '09:00'
-      triggerBreakCountInput.value = '2'
-      triggerDurationInput.value = '30'
+      modalTitle.setAttribute('data-i18next', 'preferences.schedule.addTrigger')
+      typeSelect.value = ''
+      timeOfDayGroup.style.display = 'none'
+      breakCountGroup.style.display = 'none'
     }
 
-    modal.classList.add('active')
+    new HtmlTranslate(document.querySelector('#triggerModal')).translate()
+    modal.classList.remove('hidden')
   }
 
-  function closeModal () {
-    modal.classList.remove('active')
-    currentEditingTriggerId = null
+  function closeTriggerModal () {
+    const modal = document.querySelector('#triggerModal')
+    modal.classList.add('hidden')
   }
 
-  modalCancelBtn.onclick = closeModal
+  async function handleTriggerTypeChange () {
+    const typeSelect = document.querySelector('#triggerType')
+    const timeOfDayGroup = document.querySelector('#timeOfDayGroup')
+    const breakCountGroup = document.querySelector('#breakCountGroup')
 
-  modal.onclick = (e) => {
-    if (e.target === modal) {
-      closeModal()
+    if (typeSelect.value === 'time-of-day') {
+      timeOfDayGroup.style.display = 'block'
+      breakCountGroup.style.display = 'none'
+      document.querySelector('#timeOfDay').required = true
+      document.querySelector('#breakCount').required = false
+    } else if (typeSelect.value === 'break-count') {
+      timeOfDayGroup.style.display = 'none'
+      breakCountGroup.style.display = 'block'
+      document.querySelector('#timeOfDay').required = false
+      document.querySelector('#breakCount').required = true
+    } else {
+      timeOfDayGroup.style.display = 'none'
+      breakCountGroup.style.display = 'none'
+      document.querySelector('#timeOfDay').required = false
+      document.querySelector('#breakCount').required = false
     }
   }
 
-  modalSaveBtn.onclick = async () => {
-    const type = triggerTypeSelect.value
-    const config = { type, enabled: true }
+  async function handleTriggerFormSubmit (event) {
+    event.preventDefault()
+
+    const form = event.target
+    const mode = form.dataset.mode
+    const type = document.querySelector('#triggerType').value
+    const durationMinutes = parseInt(document.querySelector('#triggerDuration').value)
+    const duration = durationMinutes * 60000
+
+    const config = {
+      type,
+      duration,
+      enabled: true
+    }
 
     if (type === 'time-of-day') {
-      config.timeOfDay = triggerTimeOfDayInput.value
-    } else {
-      config.breakCount = parseInt(triggerBreakCountInput.value, 10)
-      if (isNaN(config.breakCount) || config.breakCount < 2) {
-        alert('Break count must be at least 2')
-        return
-      }
+      config.timeOfDay = document.querySelector('#timeOfDay').value
+    } else if (type === 'break-count') {
+      config.breakCount = parseInt(document.querySelector('#breakCount').value)
     }
 
-    const duration = parseInt(triggerDurationInput.value, 10)
-    if (isNaN(duration) || duration <= 0) {
-      alert('Duration must be greater than 0')
+    try {
+      let response
+      if (mode === 'edit') {
+        const triggerId = form.dataset.triggerId
+        response = await window.stretchly.updateExtendedBreakTrigger(triggerId, config)
+      } else {
+        response = await window.stretchly.createExtendedBreakTrigger(config)
+      }
+
+      if (response && response.success) {
+        closeTriggerModal()
+        await loadExtendedBreakTriggers()
+      } else {
+        console.error('Failed to save trigger:', response?.error)
+        alert('Failed to save trigger: ' + (response?.error || 'Unknown error'))
+      }
+    } catch (error) {
+      console.error('Error saving trigger:', error)
+      alert('Error saving trigger: ' + error.message)
+    }
+  }
+
+  async function handleDeleteTrigger (triggerId) {
+    const confirmMessage = await window.i18next.t('preferences.schedule.confirmDelete')
+    if (!confirm(confirmMessage)) {
       return
     }
-    config.duration = duration * 60000
 
-    let result
-    if (currentEditingTriggerId) {
-      result = await window.stretchly.updateExtendedBreakTrigger(currentEditingTriggerId, config)
-    } else {
-      result = await window.stretchly.createExtendedBreakTrigger(config)
-    }
-
-    if (result.success) {
-      closeModal()
-      await loadExtendedBreakTriggers()
-    } else {
-      alert('Error saving trigger: ' + result.error)
+    try {
+      const response = await window.stretchly.deleteExtendedBreakTrigger(triggerId)
+      if (response && response.success) {
+        await loadExtendedBreakTriggers()
+      } else {
+        console.error('Failed to delete trigger:', response?.error)
+        alert('Failed to delete trigger: ' + (response?.error || 'Unknown error'))
+      }
+    } catch (error) {
+      console.error('Error deleting trigger:', error)
+      alert('Error deleting trigger: ' + error.message)
     }
   }
 
-  async function createNewTrigger () {
-    openModal()
-  }
+  // Event listeners for trigger management
+  document.querySelector('#addTriggerButton').addEventListener('click', () => {
+    openTriggerModal('create')
+  })
 
-  async function updateTriggerEnabled (id, enabled) {
-    const result = await window.stretchly.updateExtendedBreakTrigger(id, { enabled })
-    if (!result.success) {
-      alert('Error updating trigger: ' + result.error)
-      await loadExtendedBreakTriggers()
+  document.querySelector('#cancelButton').addEventListener('click', () => {
+    closeTriggerModal()
+  })
+
+  document.querySelector('#triggerType').addEventListener('change', handleTriggerTypeChange)
+
+  document.querySelector('#triggerForm').addEventListener('submit', handleTriggerFormSubmit)
+
+  document.querySelector('#extendedBreakTriggersBody').addEventListener('click', async (event) => {
+    if (event.target.classList.contains('edit-trigger')) {
+      const triggerId = event.target.dataset.triggerId
+      const response = await window.stretchly.getExtendedBreakTriggers()
+      if (response && response.success) {
+        const trigger = response.data.find(t => t.id === triggerId)
+        if (trigger) {
+          openTriggerModal('edit', trigger)
+        }
+      }
+    } else if (event.target.classList.contains('delete-trigger')) {
+      const triggerId = event.target.dataset.triggerId
+      await handleDeleteTrigger(triggerId)
     }
-  }
+  })
 
-  async function editTrigger (trigger) {
-    openModal(trigger)
-  }
-
-  async function deleteTriggerById (id) {
-    const confirmPrompt = await window.i18next.t('preferences.settings.confirmDelete')
-    if (!confirm(confirmPrompt)) return
-
-    const result = await window.stretchly.deleteExtendedBreakTrigger(id)
-    if (result.success) {
-      await loadExtendedBreakTriggers()
-    } else {
-      alert('Error deleting trigger: ' + result.error)
-    }
-  }
-
-  document.getElementById('addExtendedBreakTrigger').onclick = createNewTrigger
-  await loadExtendedBreakTriggers()
+  loadExtendedBreakTriggers()
 }
