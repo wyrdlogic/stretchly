@@ -95,7 +95,11 @@ function exposeStretchly () {
     openPreferences: () => ipcRenderer.send('open-preferences'),
     playSound: (name) => ipcRenderer.send('play-sound', name),
     showDebug: () => ipcRenderer.invoke('show-debug'),
-    updateTray: () => ipcRenderer.send('update-tray')
+    updateTray: () => ipcRenderer.send('update-tray'),
+    getExtendedBreakTriggers: () => ipcRenderer.invoke('get-extended-break-triggers'),
+    createExtendedBreakTrigger: (config) => ipcRenderer.invoke('create-extended-break-trigger', config),
+    updateExtendedBreakTrigger: (id, updates) => ipcRenderer.invoke('update-extended-break-trigger', id, updates),
+    deleteExtendedBreakTrigger: (id) => ipcRenderer.invoke('delete-extended-break-trigger', id)
   })
 }
 

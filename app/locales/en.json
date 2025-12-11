@@ -210,7 +210,15 @@
     "deleteTrigger": "Delete",
     "triggerTimeOfDayLabel": "Time (HH:mm)",
     "triggerBreakCountLabel": "After breaks",
-    "triggerDurationLabel": "Extended duration (minutes)"
+    "triggerDurationLabel": "Extended duration (minutes)",
+    "enterTriggerType": "Select trigger type",
+    "enterTimeOfDay": "Enter time",
+    "enterBreakCount": "After how many consecutive breaks",
+    "enterDuration": "Extended duration",
+    "confirmDelete": "Delete this trigger?",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editTriggerTitle": "Edit Trigger"
   },
   "utils": {
     "remaining": "{{count}} remaining",

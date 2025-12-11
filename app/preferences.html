@@ -257,6 +257,33 @@
       <input type="checkbox" value="breakPostpone" id="enablePostponeLong">
       <label data-i18next="preferences.schedule.enablePostponeLong" for="enablePostponeLong"></label>
     </div>
+    <div>
+      <hr />
+    </div>
+    <div>
+      <span data-i18next="preferences.settings.extendedBreakTriggers"></span>
+    </div>
+    <div>
+      <p data-i18next="preferences.settings.extendedBreakTriggersInfo"></p>
+    </div>
+    <div>
+      <button id="addExtendedBreakTrigger" data-i18next="preferences.settings.addTrigger"></button>
+    </div>
+    <div id="extendedBreakTriggersContainer">
+      <table id="extendedBreakTriggersTable">
+        <thead>
+          <tr>
+            <th data-i18next="preferences.settings.triggerEnabled"></th>
+            <th data-i18next="preferences.settings.triggerType"></th>
+            <th data-i18next="preferences.settings.triggerCondition"></th>
+            <th data-i18next="preferences.settings.triggerDuration"></th>
+            <th data-i18next="preferences.settings.triggerActions"></th>
+          </tr>
+        </thead>
+        <tbody id="extendedBreakTriggersBody">
+        </tbody>
+      </table>
+    </div>
     <div data-strict-mode>
       <hr />
     </div>
@@ -556,6 +583,37 @@
       </a>
     </div>
     <div></div>
+  </div>
+
+  <!-- Trigger Creation/Edit Modal -->
+  <div id="triggerModal" class="trigger-modal">
+    <div class="trigger-modal-content">
+      <h3 id="modalTitle" data-i18next="preferences.settings.addTrigger">Add Trigger</h3>
+      
+      <label for="triggerType" data-i18next="preferences.settings.triggerType">Type</label>
+      <select id="triggerType">
+        <option value="time-of-day" data-i18next="preferences.settings.triggerTypeTimeOfDay">Time of Day</option>
+        <option value="break-count" data-i18next="preferences.settings.triggerTypeBreakCount">Consecutive Breaks</option>
+      </select>
+
+      <div id="timeOfDayGroup" class="field-group active">
+        <label for="triggerTimeOfDay" data-i18next="preferences.settings.triggerTimeOfDayLabel">Time (HH:mm)</label>
+        <input type="time" id="triggerTimeOfDay" value="09:00">
+      </div>
+
+      <div id="breakCountGroup" class="field-group">
+        <label for="triggerBreakCount" data-i18next="preferences.settings.triggerBreakCountLabel">After breaks</label>
+        <input type="number" id="triggerBreakCount" min="2" value="2">
+      </div>
+
+      <label for="triggerDuration" data-i18next="preferences.settings.triggerDurationLabel">Extended duration (minutes)</label>
+      <input type="number" id="triggerDuration" min="1" value="30">
+
+      <div class="modal-buttons">
+        <button id="modalCancel" class="secondary" data-i18next="preferences.settings.cancel">Cancel</button>
+        <button id="modalSave" class="primary" data-i18next="preferences.settings.save">Save</button>
+      </div>
+    </div>
   </div>
 </body>
 <script type="module" src="./preferences-renderer.js"></script>

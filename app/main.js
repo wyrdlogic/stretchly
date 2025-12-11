@@ -19,6 +19,10 @@ import {
   canPostpone, canSkip, formatTimeRemaining,
   minutesRemaining, insideWindowsStore, insideFlatpak, insideSnap
 } from './utils/utils.js'
+import {
+  createTrigger, getTriggers,
+  updateTrigger, deleteTrigger
+} from './utils/extendedBreakTriggers.js'
 import IdeasLoader from './utils/ideasLoader.js'
 import BreaksPlanner from './breaksPlanner.js'
 import AppIcon from './utils/appIcon.js'
@@ -1623,6 +1627,49 @@ ipcMain.handle('i18next-dir', (event) => {
 
 ipcMain.handle('settings-get', (event, key) => {
   return settings.get(key)
+})
+
+ipcMain.handle('get-extended-break-triggers', async (event) => {
+  try {
+    const triggers = getTriggers(settings)
+    return { success: true, data: triggers }
+  } catch (error) {
+    log.error('Stretchly: failed to get extended break triggers', error)
+    return { success: false, error: error.message }
+  }
+})
+
+ipcMain.handle('create-extended-break-trigger', async (event, config) => {
+  try {
+    const trigger = createTrigger(settings, config)
+    log.info('Stretchly: created extended break trigger', trigger.id)
+    return { success: true, data: trigger }
+  } catch (error) {
+    log.error('Stretchly: failed to create extended break trigger', error)
+    return { success: false, error: error.message }
+  }
+})
+
+ipcMain.handle('update-extended-break-trigger', async (event, id, updates) => {
+  try {
+    const trigger = updateTrigger(settings, id, updates)
+    log.info('Stretchly: updated extended break trigger', id)
+    return { success: true, data: trigger }
+  } catch (error) {
+    log.error('Stretchly: failed to update extended break trigger', error)
+    return { success: false, error: error.message }
+  }
+})
+
+ipcMain.handle('delete-extended-break-trigger', async (event, id) => {
+  try {
+    deleteTrigger(settings, id)
+    log.info('Stretchly: deleted extended break trigger', id)
+    return { success: true }
+  } catch (error) {
+    log.error('Stretchly: failed to delete extended break trigger', error)
+    return { success: false, error: error.message }
+  }
 })
 
 ipcMain.on('close-current-window', (event) => {

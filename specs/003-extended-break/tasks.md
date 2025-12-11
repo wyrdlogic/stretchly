@@ -73,7 +73,7 @@
 - [ ] T022 [US1] Create test/breaksPlanner.js with mock settings containing time-of-day trigger for current time
 - [ ] T023 [US1] Add test case: _getBreakDuration returns extended duration when time matches trigger in test/breaksPlanner.js
 - [ ] T024 [US1] Add test case: _getBreakDuration returns base duration for second break same day in test/breaksPlanner.js
-- [ ] T025 [US1] Add test case: _getBreakDuration returns base duration when _scheduledBreakType is 'microbreak' in test/breaksPlanner.js
+- [ ] T025 [US1] Add test case: _getBreakDuration returns base duration when_scheduledBreakType is 'microbreak' in test/breaksPlanner.js
 
 **Checkpoint**: At this point, time-of-day triggers should be fully functional - users can configure them via settings file and breaks extend correctly
 
@@ -93,9 +93,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T029 [US2] Implement `_evaluateBreakCountTrigger(trigger)` private method in app/breaksPlanner.js to calculate consecutive long breaks and match against breakCount
-- [ ] T030 [US2] Modify `_evaluateSingleTrigger(trigger)` in app/breaksPlanner.js to delegate to `_evaluateBreakCountTrigger` when type is 'break-count'
-- [ ] T031 [US2] Add electron-log statement in `_evaluateBreakCountTrigger` to log trigger activation with count and duration
+- [X] T029 [US2] Implement `_evaluateBreakCountTrigger(trigger)` private method in app/breaksPlanner.js to calculate consecutive long breaks and match against breakCount
+- [X] T030 [US2] Modify `_evaluateSingleTrigger(trigger)` in app/breaksPlanner.js to delegate to `_evaluateBreakCountTrigger` when type is 'break-count'
+- [X] T031 [US2] Add electron-log statement in `_evaluateBreakCountTrigger` to log trigger activation with count and duration
 
 ### Integration Tests for User Story 2
 
@@ -120,32 +120,33 @@
 
 ### IPC Handlers Implementation
 
-- [ ] T037 [P] [US3] Add `ipcMain.handle('get-extended-break-triggers')` in app/main.js that calls `getTriggers(settings)` and returns `{ success, data }`
-- [ ] T038 [P] [US3] Add `ipcMain.handle('create-extended-break-trigger')` in app/main.js with try/catch calling `createTrigger(settings, config)`
-- [ ] T039 [P] [US3] Add `ipcMain.handle('update-extended-break-trigger')` in app/main.js with try/catch calling `updateTrigger(settings, id, updates)`
-- [ ] T040 [P] [US3] Add `ipcMain.handle('delete-extended-break-trigger')` in app/main.js with try/catch calling `deleteTrigger(settings, id)`
+- [X] T037 [P] [US3] Add `ipcMain.handle('get-extended-break-triggers')` in app/main.js that calls `getTriggers(settings)` and returns `{ success, data }`
+- [X] T038 [P] [US3] Add `ipcMain.handle('create-extended-break-trigger')` in app/main.js with try/catch calling `createTrigger(settings, config)`
+- [X] T039 [P] [US3] Add `ipcMain.handle('update-extended-break-trigger')` in app/main.js with try/catch calling `updateTrigger(settings, id, updates)`
+- [X] T040 [P] [US3] Add `ipcMain.handle('delete-extended-break-trigger')` in app/main.js with try/catch calling `deleteTrigger(settings, id)`
 
 ### UI Implementation
 
-- [ ] T041 [US3] Add extended break triggers section to app/preferences.html with table structure (thead with columns: Enabled, Type, Condition, Duration, Actions)
-- [ ] T042 [US3] Add CSS styles for trigger table in app/css/preferences.css (table layout, button styles, checkbox styles)
-- [ ] T043 [US3] Implement `loadExtendedBreakTriggers()` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('get-extended-break-triggers')`
-- [ ] T044 [US3] Implement `renderTriggerTable(triggers)` function in app/preferences-renderer.js that populates table with trigger rows
-- [ ] T045 [US3] Add event listener for "Add Trigger" button in app/preferences-renderer.js that shows input prompts for type, condition, duration (follow existing pattern: use simple HTML form within preferences window, similar to break idea management)
-- [ ] T046 [US3] Implement `createNewTrigger(config)` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('create-extended-break-trigger')`
-- [ ] T047 [US3] Implement `updateTriggerEnabled(id, enabled)` async function in app/preferences-renderer.js for checkbox changes
-- [ ] T048 [US3] Implement `editTrigger(trigger)` function in app/preferences-renderer.js with prompt for duration modification
-- [ ] T049 [US3] Implement `deleteTriggerById(id)` async function in app/preferences-renderer.js with confirmation dialog
-- [ ] T050 [US3] Call `loadExtendedBreakTriggers()` on DOMContentLoaded in app/preferences-renderer.js
+- [X] T041 [US3] Add extended break triggers section to app/preferences.html with table structure (thead with columns: Enabled, Type, Condition, Duration, Actions)
+- [X] T042 [US3] Add CSS styles for trigger table in app/css/preferences.css (table layout, button styles, checkbox styles)
+- [X] T043 [US3] Implement `loadExtendedBreakTriggers()` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('get-extended-break-triggers')`
+- [X] T044 [US3] Implement `renderTriggerTable(triggers)` function in app/preferences-renderer.js that populates table with trigger rows
+- [X] T045 [US3] Add event listener for "Add Trigger" button in app/preferences-renderer.js that shows input prompts for type, condition, duration (follow existing pattern: use simple HTML form within preferences window, similar to break idea management)
+- [X] T046 [US3] Implement `createNewTrigger(config)` async function in app/preferences-renderer.js that calls `ipcRenderer.invoke('create-extended-break-trigger')`
+- [X] T047 [US3] Implement `updateTriggerEnabled(id, enabled)` async function in app/preferences-renderer.js for checkbox changes
+- [X] T048 [US3] Implement `editTrigger(trigger)` function in app/preferences-renderer.js with prompt for duration modification
+- [X] T049 [US3] Implement `deleteTriggerById(id)` async function in app/preferences-renderer.js with confirmation dialog
+- [X] T050 [US3] Call `loadExtendedBreakTriggers()` on DOMContentLoaded in app/preferences-renderer.js
 
 ### Localization
 
-- [ ] T051 [P] [US3] Add i18n keys for trigger UI to app/locales/en.json: extendedBreakTriggers, extendedBreakTriggersDescription, triggerEnabled, triggerType, triggerCondition, triggerDuration, actions, addTrigger, noTriggersConfigured
-- [ ] T052 [P] [US3] Copy i18n keys from en.json to other locale files (de.json, es.json, fr.json, etc.) with placeholders for translation
+- [X] T051 [P] [US3] Add i18n keys for trigger UI to app/locales/en.json: extendedBreakTriggers, extendedBreakTriggersDescription, triggerEnabled, triggerType, triggerCondition, triggerDuration, actions, addTrigger, noTriggersConfigured
+- [X] T052 [P] [US3] Copy i18n keys from en.json to other locale files (de.json, es.json, fr.json, etc.) with placeholders for translation
 
 **Checkpoint**: Full CRUD UI is functional - users can manage triggers without editing config files
 
 **Acceptance Criteria for UI Completion:**
+
 - All trigger CRUD operations work through preferences UI (create, read, update, delete)
 - Settings persist across app restart
 - No console errors during trigger operations
@@ -208,27 +209,35 @@
 ### Parallel Opportunities
 
 **Setup Phase (Phase 1)**:
+
 - T002 (create extendedBreakTriggers.js) and T003 (add i18n keys) can run in parallel with T001
 
 **Foundational Phase (Phase 2)**:
+
 - T005-T008 (getTriggers, getTriggerById, updateTrigger, deleteTrigger) can run in parallel after T004 completes
 
 **User Story 1 Tests**:
+
 - T010, T011, T012, T013, T014 can all run in parallel (different test cases in same file)
 
 **User Story 2 Tests**:
+
 - T026, T027, T028 can run in parallel
 
 **User Story 3 IPC Handlers**:
+
 - T037, T038, T039, T040 can all run in parallel (different IPC channels)
 
 **User Story 3 Localization**:
+
 - T051 and T052 can run in parallel
 
 **Polish Phase**:
+
 - T053 (lint), T054 (tests), T056 (JSDoc), T060 (CHANGELOG) can run in parallel
 
 **Cross-Story Parallelization**:
+
 - If team capacity allows, User Story 2 can be implemented in parallel with User Story 1 (both depend only on Foundational phase)
 - User Story 3 UI work (T041-T050) can start once US1 is complete, even if US2 is still in progress
 
@@ -308,6 +317,7 @@ git merge feature/us3-i18n
 **Tasks**: T001-T025 (25 tasks, ~4-6 hours)
 
 **Delivers**:
+
 - Users can add time-of-day triggers to settings file
 - Breaks extend correctly when time matches
 - Triggers reset daily at midnight
@@ -316,7 +326,8 @@ git merge feature/us3-i18n
 
 **Value**: Users can enforce daily lunch breaks or exercise periods without UI (power users can edit config.json directly)
 
-**Limitations**: 
+**Limitations**:
+
 - No break-count triggers yet
 - No UI for configuration (manual config.json editing)
 

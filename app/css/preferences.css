@@ -443,3 +443,161 @@ body[dir=rtl] .heart > .authenticate > a {
   min-width: 40px;
   text-align: right;
 }
+
+#addExtendedBreakTrigger {
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--main-color);
+  background: var(--main-color);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#addExtendedBreakTrigger:hover {
+  opacity: 0.8;
+}
+
+#extendedBreakTriggersContainer {
+  margin: 8px 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+#extendedBreakTriggersTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+#extendedBreakTriggersTable th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid var(--border-color, #ccc);
+  font-weight: bold;
+}
+
+#extendedBreakTriggersTable td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+#extendedBreakTriggersTable tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+#extendedBreakTriggersTable input[type="checkbox"] {
+  cursor: pointer;
+}
+
+#extendedBreakTriggersTable button {
+  padding: 4px 12px;
+  margin: 0 2px;
+  border-radius: 4px;
+  border: 1px solid var(--main-color);
+  background: var(--main-color);
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#extendedBreakTriggersTable button:hover {
+  opacity: 0.8;
+}
+
+#extendedBreakTriggersBody tr.no-triggers td {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-color-secondary, #666);
+}
+
+.trigger-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.trigger-modal.active {
+  display: flex;
+}
+
+.trigger-modal-content {
+  background: var(--nav-bg, white);
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.trigger-modal-content h3 {
+  margin-top: 0;
+  color: var(--text-color, #333);
+}
+
+.trigger-modal-content label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: var(--text-color, #333);
+}
+
+.trigger-modal-content input,
+.trigger-modal-content select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.trigger-modal-content .modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.trigger-modal-content button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--main-color);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.trigger-modal-content button.primary {
+  background: var(--main-color);
+  color: white;
+}
+
+.trigger-modal-content button.primary:hover {
+  opacity: 0.85;
+}
+
+.trigger-modal-content button.secondary {
+  background: transparent;
+  color: var(--main-color);
+}
+
+.trigger-modal-content button.secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.trigger-modal-content .field-group {
+  display: none;
+}
+
+.trigger-modal-content .field-group.active {
+  display: block;
+}
+
