@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Autostart functionality in Flatpaks
 - updated appExclusions section on README to include description for Windows and substring matching
 - **Strict Mode with Friction**: New friction feature that requires typing random characters to skip breaks, with configurable difficulty and incremental challenge
+- **Extended Break Triggers**: Configure long breaks to automatically extend to custom durations based on time-of-day or consecutive break count triggers. Manage triggers through preferences UI with full create, edit, and delete support. Extended breaks persist across skip/postpone actions until completed.
 
 ### Fixed
 - snap package not starting on Wayland

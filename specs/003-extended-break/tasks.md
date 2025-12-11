@@ -159,17 +159,17 @@
 
 **Purpose**: Improvements that affect multiple user stories and final validation
 
-- [ ] T053 [P] Run `npm run lint` and fix all StandardJS violations in new/modified files
-- [ ] T054 [P] Run `npm test` and verify all tests pass
+- [X] T053 [P] Run `npm run lint` and fix all StandardJS violations in new/modified files
+- [X] T054 [P] Run `npm test` and verify all tests pass
 - [ ] T055 Verify manual test checklist from quickstart.md Step 10 (14 test scenarios)
-- [ ] T056 [P] Add JSDoc comments to public functions in app/utils/extendedBreakTriggers.js
+- [X] T056 [P] Add JSDoc comments to public functions in app/utils/extendedBreakTriggers.js
 - [ ] T057 Test idle detection cancels extended break correctly (start 15min break, idle for 5min, verify break cancels)
 - [ ] T058 Test midnight reset works correctly (configure time-of-day trigger, verify it triggers, wait until next day, verify it triggers again)
 - [ ] T059 Test multiple triggers with longest-wins logic (configure 10min and 20min triggers both active, verify 20min used)
-- [ ] T060 [P] Update CHANGELOG.md with feature description for next release
+- [X] T060 [P] Update CHANGELOG.md with feature description for next release
 - [ ] T061 Verify triggers persist across app restart (create trigger, restart app, verify trigger still exists)
 - [ ] T062 Test disabled trigger doesn't fire (create trigger, disable it, verify break uses regular duration)
-- [ ] T063 [P] Add error recovery in getTriggers() function in app/utils/extendedBreakTriggers.js with try/catch for corrupt data, log error with electron-log, return empty array on failure (implements FR-022)
+- [X] T063 [P] Add error recovery in getTriggers() function in app/utils/extendedBreakTriggers.js with try/catch for corrupt data, log error with electron-log, return empty array on failure (implements FR-022)
 
 ---
 
