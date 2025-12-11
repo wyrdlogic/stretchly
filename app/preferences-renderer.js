@@ -560,6 +560,17 @@ window.onload = async (e) => {
 
     new HtmlTranslate(document.querySelector('#triggerModal')).translate()
     modal.classList.remove('hidden')
+
+    // Focus the first visible input after modal opens
+    setTimeout(() => {
+      if (typeSelect.value === 'time-of-day') {
+        timeOfDayInput.focus()
+      } else if (typeSelect.value === 'break-count') {
+        breakCountInput.focus()
+      } else {
+        typeSelect.focus()
+      }
+    }, 100)
   }
 
   function closeTriggerModal () {
@@ -571,22 +582,28 @@ window.onload = async (e) => {
     const typeSelect = document.querySelector('#triggerType')
     const timeOfDayGroup = document.querySelector('#timeOfDayGroup')
     const breakCountGroup = document.querySelector('#breakCountGroup')
+    const timeOfDayInput = document.querySelector('#timeOfDay')
+    const breakCountInput = document.querySelector('#breakCount')
 
     if (typeSelect.value === 'time-of-day') {
       timeOfDayGroup.style.display = 'block'
       breakCountGroup.style.display = 'none'
-      document.querySelector('#timeOfDay').required = true
-      document.querySelector('#breakCount').required = false
+      timeOfDayInput.required = true
+      breakCountInput.required = false
+      // Focus the time input after display change
+      setTimeout(() => timeOfDayInput.focus(), 50)
     } else if (typeSelect.value === 'break-count') {
       timeOfDayGroup.style.display = 'none'
       breakCountGroup.style.display = 'block'
-      document.querySelector('#timeOfDay').required = false
-      document.querySelector('#breakCount').required = true
+      timeOfDayInput.required = false
+      breakCountInput.required = true
+      // Focus the break count input after display change
+      setTimeout(() => breakCountInput.focus(), 50)
     } else {
       timeOfDayGroup.style.display = 'none'
       breakCountGroup.style.display = 'none'
-      document.querySelector('#timeOfDay').required = false
-      document.querySelector('#breakCount').required = false
+      timeOfDayInput.required = false
+      breakCountInput.required = false
     }
   }
 
@@ -660,6 +677,18 @@ window.onload = async (e) => {
 
   document.querySelector('#cancelButton').addEventListener('click', () => {
     closeTriggerModal()
+  })
+
+  // Close modal when clicking outside the modal content
+  document.querySelector('#triggerModal').addEventListener('click', (event) => {
+    if (event.target.id === 'triggerModal') {
+      closeTriggerModal()
+    }
+  })
+
+  // Prevent modal content clicks from closing the modal
+  document.querySelector('.modal-content').addEventListener('click', (event) => {
+    event.stopPropagation()
   })
 
   document.querySelector('#triggerType').addEventListener('change', handleTriggerTypeChange)

@@ -495,6 +495,9 @@ body[dir=rtl] .heart > .authenticate > a {
   min-width: 400px;
   max-width: 500px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  position: relative;
+  z-index: 1001;
 }
 
 .modal-content h2 {
