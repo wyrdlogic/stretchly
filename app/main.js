@@ -843,7 +843,7 @@ function startBreak () {
     return
   }
 
-  const breakDuration = settings.get('breakDuration')
+  const breakDuration = breakPlanner.currentBreakDuration
   const strictMode = settings.get('breakStrictMode')
   const postponesLimit = settings.get('breakPostponesLimit')
   const postponableDurationPercent = settings.get('breakPostponableDurationPercent')
@@ -1043,7 +1043,10 @@ function finishMicrobreak (shouldPlaySound = true, shouldPlanNext = true) {
 function finishBreak (shouldPlaySound = true, shouldPlanNext = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins, 'long')
   log.info(`Stretchly: finishing Long break (shouldPlanNext: ${shouldPlanNext})`)
+
+  // Clear pending extended break only if break was completed (not skipped/postponed)
   if (shouldPlanNext) {
+    breakPlanner.clearPendingExtendedBreak()
     breakPlanner.nextBreak()
   } else {
     breakPlanner.clear()

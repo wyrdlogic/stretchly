@@ -15,6 +15,7 @@ class BreaksPlanner extends EventEmitter {
     this.isPaused = false
     this.lastTriggerEvaluationDate = new Date().toDateString()
     this.triggeredTodayIds = new Set()
+    this.pendingExtendedBreak = null
     this.naturalBreaksManager = new NaturalBreaksManager(settings)
     this.dndManager = new DndManager(settings)
     this.appExclusionsManager = new AppExclusionsManager(settings)
@@ -337,7 +338,7 @@ class BreaksPlanner extends EventEmitter {
     }
 
     if (currentTime >= trigger.timeOfDay) {
-      this.triggeredTodayIds.add(trigger.id)
+      // Don't add to triggeredTodayIds yet - will be added when break completes
       log.info(`Stretchly: extended break triggered (time-of-day: ${trigger.timeOfDay}), duration: ${trigger.duration / 60000}min`)
       return { duration: trigger.duration, trigger }
     }
@@ -401,8 +402,35 @@ class BreaksPlanner extends EventEmitter {
       return baseDuration
     }
 
-    const { duration } = this._evaluateExtendedBreakTriggers()
+    // Check for pending extended break (from skip/postpone)
+    if (this.pendingExtendedBreak) {
+      return this.pendingExtendedBreak.duration
+    }
+
+    const { duration, triggers } = this._evaluateExtendedBreakTriggers()
+    if (duration) {
+      // Store as pending until completed
+      this.pendingExtendedBreak = { duration, triggers }
+    }
     return duration || baseDuration
+  }
+
+  clearPendingExtendedBreak () {
+    if (this.pendingExtendedBreak) {
+      log.info('Stretchly: clearing pending extended break (completed)')
+      // Mark time-of-day triggers as triggered for today
+      for (const trigger of this.pendingExtendedBreak.triggers) {
+        if (trigger.type === 'time-of-day') {
+          this.triggeredTodayIds.add(trigger.id)
+          log.info(`Stretchly: marking trigger ${trigger.id} as completed for today`)
+        }
+      }
+      this.pendingExtendedBreak = null
+    }
+  }
+
+  get currentBreakDuration () {
+    return this._getBreakDuration()
   }
 }
 
